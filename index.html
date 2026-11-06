@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="vi">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -73,6 +74,8 @@ footer{text-align:center;padding:28px 16px;color:#86778c;font-size:13px}
 </main>
 <footer>🪷 Sơn Tự Online • Nguyện đem công đức này hướng về khắp tất cả 🪷</footer>
 <script>
+ const SUPABASE_URL = "https://iot rbyvenbdcbvqlknhh.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "DAN_PUBLISHABLE_KEY_VAO_DAY";
 const CAP=200, KEY='chuaOnline_v1', MY='chuaOnline_myId';
 let myId=localStorage.getItem(MY);
 function getData(){try{return JSON.parse(localStorage.getItem(KEY))||{active:[],waiting:[]}}catch(e){return{active:[],waiting:[]}}}
