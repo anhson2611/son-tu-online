@@ -253,56 +253,85 @@ scene.add(b);
 }
 }
 
+
+
 /* NHÂN VẬT PHẬT TỬ 3D */
 const phatTu = new THREE.Group();
 
-const aoTrang = new THREE.MeshStandardMaterial({
-  color:'#f2dfbd',
-  roughness:.8
+// Vật liệu
+const aoCaSa = new THREE.MeshStandardMaterial({
+  color: 0xe8c77b,
+  roughness: 0.85
 });
 
 const da = new THREE.MeshStandardMaterial({
-  color:'#e8bd98'
+  color: 0xf1c49b,
+  roughness: 0.8
 });
 
-// Thân
+const chan = new THREE.MeshStandardMaterial({
+  color: 0x6c5138
+});
+
+// Thân áo cà sa
 const than = new THREE.Mesh(
-  new THREE.CylinderGeometry(.35,.5,1.3,16),
-  aoTrang
+  new THREE.CylinderGeometry(0.38, 0.58, 1.35, 16),
+  aoCaSa
 );
-than.position.y=1.1;
+than.position.y = 1.15;
 phatTu.add(than);
 
 // Đầu
 const dau = new THREE.Mesh(
-  new THREE.SphereGeometry(.35,24,20),
+  new THREE.SphereGeometry(0.30, 24, 24),
   da
 );
-dau.position.y=2;
+dau.position.y = 2.05;
 phatTu.add(dau);
 
-// Hai tay
-for(let x of [-.42,.42]){
-  let tay=new THREE.Mesh(
-    new THREE.CylinderGeometry(.12,.15,.8,12),
-    aoTrang
-  );
-  tay.position.set(x,1.35,0);
-  tay.rotation.z=x>0?-.4:.4;
-  phatTu.add(tay);
-}
+// Cổ
+const co = new THREE.Mesh(
+  new THREE.CylinderGeometry(0.13, 0.15, 0.22, 12),
+  da
+);
+co.position.y = 1.82;
+phatTu.add(co);
 
-// Hai chân
-for(let x of [-.22,.22]){
-  let chan=new THREE.Mesh(
-    new THREE.BoxGeometry(.25,.6,.35),
-    aoTrang
-  );
-  chan.position.set(x,.35,.1);
-  phatTu.add(chan);
-}
+// Tay trái
+const tayTrai = new THREE.Mesh(
+  new THREE.CylinderGeometry(0.12, 0.16, 0.85, 12),
+  aoCaSa
+);
+tayTrai.position.set(-0.43, 1.30, 0);
+tayTrai.rotation.z = -0.35;
+phatTu.add(tayTrai);
 
-phatTu.position.set(0,0,5);
+// Tay phải
+const tayPhai = new THREE.Mesh(
+  new THREE.CylinderGeometry(0.12, 0.16, 0.85, 12),
+  aoCaSa
+);
+tayPhai.position.set(0.43, 1.30, 0);
+tayPhai.rotation.z = 0.35;
+phatTu.add(tayPhai);
+
+// Hai bàn chân
+const chanTrai = new THREE.Mesh(
+  new THREE.BoxGeometry(0.22, 0.16, 0.42),
+  chan
+);
+chanTrai.position.set(-0.18, 0.12, 0.08);
+phatTu.add(chanTrai);
+
+const chanPhai = new THREE.Mesh(
+  new THREE.BoxGeometry(0.22, 0.16, 0.42),
+  chan
+);
+chanPhai.position.set(0.18, 0.12, 0.08);
+phatTu.add(chanPhai);
+
+// Đặt nhân vật
+phatTu.position.set(0, 0, 5);
 scene.add(phatTu);
 
 // Quỳ lạy
