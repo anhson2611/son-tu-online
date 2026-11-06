@@ -22,6 +22,109 @@ form{display:grid;gap:12px}label{font-size:14px;font-weight:650}input,select{wid
 .queue{max-height:260px;overflow:auto;padding-left:22px}.queue li{padding:6px 0;border-bottom:1px solid #f2e9f4}
 footer{text-align:center;padding:28px 16px;color:#86778c;font-size:13px}
 .notice{font-size:12px;color:#88788d;line-height:1.6}
+ 
+/* ===== PHONG LE PHAT SON TU ONLINE ===== */
+.phong-le-3d {
+  margin: 30px auto;
+  max-width: 1200px;
+  padding: 25px;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #24103d, #642d86, #210b37);
+  color: white;
+  text-align: center;
+  overflow: hidden;
+  box-shadow: 0 0 35px #d99aff55;
+}
+
+.phong-le-3d h2 {
+  font-size: clamp(25px, 4vw, 42px);
+  color: #ffe69c;
+  margin: 10px;
+}
+
+.phong-le-3d .ban-tho {
+  position: relative;
+  padding: 30px 10px;
+  background: radial-gradient(circle, #8a4bb4, #260d40);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.phong-le-3d .tuong-phat {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.phong-le-3d .tuong {
+  width: 220px;
+  padding: 20px;
+  border-radius: 20px;
+  background: #ffffff12;
+  border: 1px solid #ffd87566;
+}
+
+.phong-le-3d .tuong .hinh {
+  font-size: 100px;
+  filter: drop-shadow(0 0 18px gold);
+  animation: hao-quang 3s infinite alternate;
+}
+
+.phong-le-3d .tuong h3 {
+  color: #ffe69c;
+}
+
+.phong-le-3d .khói {
+  position: absolute;
+  font-size: 35px;
+  animation: khoi-huong 4s infinite ease-in-out;
+  opacity: .6;
+}
+
+.phong-le-3d .phat-tu {
+  display: inline-block;
+  font-size: 55px;
+  margin: 10px;
+  transform-origin: center bottom;
+  animation: cúi-lạy 4s infinite ease-in-out;
+}
+
+.phong-le-3d .phat-tu:nth-child(2) {
+  animation-delay: .5s;
+}
+.phong-le-3d .phat-tu:nth-child(3) {
+  animation-delay: 1s;
+}
+.phong-le-3d .phat-tu:nth-child(4) {
+  animation-delay: 1.5s;
+}
+
+.phong-le-3d .san-le {
+  background: linear-gradient(90deg,#f9c74f,#ffdf9e);
+  color: #43166a;
+  padding: 15px;
+  border-radius: 15px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+@keyframes cúi-lạy {
+  0%,100% { transform: rotate(0deg) translateY(0); }
+  40%,60% { transform: rotate(35deg) translateY(12px); }
+}
+
+@keyframes hao-quang {
+  from { filter: drop-shadow(0 0 8px gold); }
+  to { filter: drop-shadow(0 0 28px #ffe680); }
+}
+
+@keyframes khoi-huong {
+  0% { transform: translateY(30px); opacity: 0; }
+  50% { opacity: .7; }
+  100% { transform: translateY(-50px); opacity: 0; }
+}
+
 </style>
 </head>
 <body>
@@ -103,4 +206,50 @@ function leave(){if(!myId)return;let d=getData();d.active=d.active.filter(x=>x.i
 function ritual(action){document.getElementById('ritualMsg').textContent=`${action} 🙏 Nguyện tâm an, thân an, gia đình bình an và mọi chúng sinh đều được an lành.`}
 window.addEventListener('storage',update);update();
 </script>
+
+<!-- PHONG LE PHAT SON TU ONLINE -->
+<section class="phong-le-3d">
+
+  <h2>🪷 PHÒNG LỄ PHẬT TRỰC TUYẾN 🪷</h2>
+  <p>An lạc • Từ bi • Chánh niệm</p>
+
+  <div class="ban-tho">
+
+    <div class="khói" style="left:15%">☁️</div>
+    <div class="khói" style="left:50%;animation-delay:1s">☁️</div>
+    <div class="khói" style="left:80%;animation-delay:2s">☁️</div>
+
+    <div class="tuong-phat">
+
+      <div class="tuong">
+        <div class="hinh">🪷</div>
+        <h3>Quan Thế Âm Bồ Tát</h3>
+        <p>Nam mô Đại từ Đại bi cứu khổ cứu nạn</p>
+      </div>
+
+      <div class="tuong">
+        <div class="hinh">🧘</div>
+        <h3>Đức Phật Thích Ca</h3>
+        <p>Nam mô Bổn Sư Thích Ca Mâu Ni Phật</p>
+      </div>
+
+    </div>
+
+    <div class="san-le">
+      🪷 PHẬT TỬ ĐANG THÀNH KÍNH HÀNH LỄ 🪷
+    </div>
+
+    <div class="cac-phat-tu">
+      <span class="phat-tu">🙏</span>
+      <span class="phat-tu">🙇</span>
+      <span class="phat-tu">🙏</span>
+      <span class="phat-tu">🙇</span>
+      <span class="phat-tu">🙏</span>
+    </div>
+
+    <p>Nguyện đem công đức này hồi hướng khắp tất cả chúng sinh</p>
+
+  </div>
+</section>
+
 </body></html>
