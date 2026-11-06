@@ -1,49 +1,329 @@
-<!doctype html>
-<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>Sơn Tự Online</title><meta name="theme-color" content="#17152a"><style>
-*{box-sizing:border-box}body{margin:0;background:#101322;color:#fff;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;overflow:hidden}#scene{position:fixed;inset:0}canvas{display:block}.glass{background:rgba(20,19,36,.76);backdrop-filter:blur(12px);border:1px solid #ffffff26;box-shadow:0 8px 30px #0004;border-radius:18px}.top{position:fixed;top:12px;left:12px;right:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;pointer-events:none}.brand{padding:10px 16px;pointer-events:auto}.brand b{font-size:clamp(19px,3vw,28px);color:#ffd56a}.brand small{display:block;color:#e7d9b6}.status{padding:10px 14px;font-size:13px;pointer-events:auto}.left{position:fixed;left:12px;top:105px;display:grid;gap:8px}.btn{border:1px solid #ffffff24;color:white;background:rgba(27,25,42,.82);border-radius:14px;padding:12px 15px;font-size:14px;cursor:pointer;touch-action:manipulation}.btn:active,.btn.active{background:#a66b1d;border-color:#ffd46c;box-shadow:0 0 18px #ffbd4b55}.bottom{position:fixed;bottom:12px;left:12px;right:12px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.bottom .btn{min-width:100px}.toast{position:fixed;left:50%;top:90px;transform:translateX(-50%);padding:12px 18px;opacity:0;transition:.25s;pointer-events:none}.toast.show{opacity:1}.hint{position:fixed;right:12px;bottom:90px;padding:12px;max-width:190px;font-size:12px;color:#f5e8c8}.counter{position:fixed;right:12px;top:105px;padding:12px;font-size:13px}.counter strong{color:#ffdf80;font-size:20px}@media(max-width:600px){.left{top:100px}.left .btn{padding:10px;font-size:12px}.counter{top:100px}.hint{display:none}.bottom{bottom:8px}.bottom .btn{min-width:0;padding:10px;font-size:12px}.brand small{font-size:10px}}
-</style></head><body><div id="scene"></div>
-<div class="top"><div class="brand glass"><b>🪷 Sơn Tự Online</b><small>Không gian tu học và lễ Phật trực tuyến</small></div><div class="status glass">🙏 Phật tử: <b id="name">Khách vãng lai</b></div></div>
-<div class="left"><button class="btn active" onclick="act('Lễ Phật 🙏')">🙏 Lễ Phật</button><button class="btn" onclick="act('Đang niệm Nam mô A Di Đà Phật')">🪷 Niệm Phật</button><button class="btn" onclick="act('Đã thắp hương')">🕯️ Thắp hương</button><button class="btn" onclick="act('Đã dâng hoa')">🌸 Dâng hoa</button><button class="btn" onclick="act('Đã thỉnh chuông')">🔔 Thỉnh chuông</button><button class="btn" onclick="act('Đang thiền tĩnh tâm')">🧘 Thiền</button></div>
-<div class="counter glass">🌿 Công đức<br><strong id="merit">0</strong></div><div id="toast" class="toast glass">Nam mô A Di Đà Phật</div><div class="hint glass">🖱️ Kéo để xoay góc nhìn<br>Pinch/scroll để phóng to thu nhỏ<br>Chạm nút để thực hành</div>
-<div class="bottom"><button class="btn" onclick="move(0,1)">⬆ Tiến</button><button class="btn" onclick="move(-1,0)">⬅ Trái</button><button class="btn" onclick="move(1,0)">➡ Phải</button><button class="btn" onclick="move(0,-1)">⬇ Lùi</button><button class="btn" onclick="resetView()">🏯 Về chính điện</button></div>
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sơn Tự Online</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101322;color:white;font-family:Arial,sans-serif;overflow:hidden}
+#scene{position:fixed;inset:0}
+canvas{display:block}
+.panel{background:#17172ae8;border:1px solid #ffffff30;border-radius:15px;padding:12px}
+.top{position:fixed;top:12px;left:12px}
+.top b{font-size:26px;color:#ffd36a}
+.left{position:fixed;left:12px;top:110px;display:grid;gap:8px}
+button{background:#211e35;color:white;border:1px solid #ffffff30;border-radius:12px;padding:12px 16px;font-size:15px;cursor:pointer}
+button:hover{background:#a66b1d}
+.counter{position:fixed;right:12px;top:12px}
+.bottom{position:fixed;bottom:15px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+#toast{position:fixed;top:100px;left:50%;transform:translateX(-50%);display:none}
+</style>
 
 <script type="importmap">
 {
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+  "imports":{
+    "three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
   }
 }
 </script>
+</head>
+<body>
 
-  <script type="module">
+<div id="scene"></div>
+
+<div class="top panel">
+<b>🪷 Sơn Tự Online</b><br>
+Không gian tu học và lễ Phật trực tuyến
+</div>
+
+<div class="left">
+<button onclick="act('🙏 Lễ Phật')">🙏 Lễ Phật</button>
+<button onclick="act('🪷 Niệm Phật')">🪷 Niệm Phật</button>
+<button onclick="act('🕯️ Thắp hương')">🕯️ Thắp hương</button>
+<button onclick="act('🌸 Dâng hoa')">🌸 Dâng hoa</button>
+<button onclick="act('🔔 Thỉnh chuông')">🔔 Thỉnh chuông</button>
+<button onclick="act('🧘 Thiền')">🧘 Thiền</button>
+</div>
+
+<div class="counter panel">🌿 Công đức<br><b id="merit">0</b></div>
+<div id="toast" class="panel"></div>
+
+<div class="bottom">
+<button onclick="move(0,1)">⬆ Tiến</button>
+<button onclick="move(-1,0)">⬅ Trái</button>
+<button onclick="move(1,0)">➡ Phải</button>
+<button onclick="move(0,-1)">⬇ Lùi</button>
+<button onclick="resetView()">🏯 Chính điện</button>
+</div>
   
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+<script type="module">
+import * as THREE from 'three';
 import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
-const host=document.querySelector('#scene'),scene=new THREE.Scene();scene.background=new THREE.Color('#8ab7d7');scene.fog=new THREE.Fog('#b9c9d7',28,85);
-const camera=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.1,150);camera.position.set(0,8,19);
-const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;host.appendChild(renderer.domElement);
-const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,3,0);controls.enableDamping=true;controls.maxPolarAngle=Math.PI/2.05;controls.minDistance=7;controls.maxDistance=35;
-scene.add(new THREE.HemisphereLight(0xffe7c5,0x43536a,2));const sun=new THREE.DirectionalLight(0xffd89a,3);sun.position.set(-8,16,8);sun.castShadow=true;scene.add(sun);
-const mat=(c,r=.7,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});const gold=mat('#dca83f',.3,.65),wood=mat('#54251a'),red=mat('#9d2e22'),stone=mat('#b9b4a8'),green=mat('#426b48'),water=mat('#4e9da9',.2,.3);
-function box(x,y,z,sx,sy,sz,material){let o=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),material);o.position.set(x,y,z);o.castShadow=o.receiveShadow=true;scene.add(o);return o}
-// ground and path
-box(0,-.35,0,70,.6,70,green);box(0,-.02,8,5,.12,24,stone);for(let z=-2;z<19;z+=2)box(0,.06,z,4.8,.04,.08,mat('#8f887e'));
-// lotus pools
-for(const x of [-9,9]){box(x,.0,5,5,.18,13,stone);box(x,.12,5,4.6,.08,12.6,water);for(let i=0;i<12;i++){let p=new THREE.Mesh(new THREE.SphereGeometry(.35,.12,8),mat(i%2?'#f5a8c5':'#f7d6e6'));p.scale.set(1,.18,.65);p.position.set(x+(Math.random()-.5)*3,.3,Math.random()*11-1);scene.add(p)}}
-// temple base, columns, hall
-box(0,.4,-4,17,.8,9,stone);box(0,.9,-4,16,.25,8,wood);box(0,3,-4,13,4,6,wood);box(0,5.15,-4,14,.25,6.5,gold);
-for(let x=-5.5;x<=5.5;x+=2.75)for(let z of [-6.5,-1.5]){let c=new THREE.Mesh(new THREE.CylinderGeometry(.22,.28,4.2,12),red);c.position.set(x,3,z);c.castShadow=true;scene.add(c);let cap=new THREE.Mesh(new THREE.CylinderGeometry(.4,.35,.2,12),gold);cap.position.set(x,5.1,z);scene.add(cap)}
-// roof layers (stylized pagoda)
-function roof(y,w,d){let g=new THREE.ConeGeometry(w,1.25,4);g.rotateY(Math.PI/4);let r=new THREE.Mesh(g,red);r.position.set(0,y,-4);r.scale.set(1,1,d/w);r.castShadow=true;scene.add(r);let trim=new THREE.Mesh(new THREE.ConeGeometry(w*1.04,.18,4),gold);trim.geometry.rotateY(Math.PI/4);trim.position.set(0,y-.55,-4);trim.scale.z=d/w;scene.add(trim)}roof(6.1,9,6.5);roof(7.4,6.7,5);roof(8.5,4.5,3.8);
-// Buddha golden silhouette seated
-const bud=new THREE.Group();let body=new THREE.Mesh(new THREE.SphereGeometry(1,32,24),gold);body.scale.set(.9,1.25,.65);body.position.y=2.2;bud.add(body);let head=new THREE.Mesh(new THREE.SphereGeometry(.55,24,20),gold);head.position.y=3.55;bud.add(head);let halo=new THREE.Mesh(new THREE.TorusGeometry(1.25,.09,12,64),gold);halo.position.set(0,3.2,-.2);bud.add(halo);let base=new THREE.Mesh(new THREE.CylinderGeometry(1.5,1.8,.55,32),mat('#b66a22'));base.position.y=.65;bud.add(base);bud.position.set(0,1.4,-3.6);scene.add(bud);
-// lamps
-for(let x of [-7,-4,4,7]){let pole=new THREE.Mesh(new THREE.CylinderGeometry(.06,.1,3,8),wood);pole.position.set(x,1.5,1);scene.add(pole);let lamp=new THREE.Mesh(new THREE.SphereGeometry(.35,16,12),mat('#ffce65',.2));lamp.position.set(x,3.1,1);scene.add(lamp);let light=new THREE.PointLight('#ffbd58',1.5,7);light.position.copy(lamp.position);scene.add(light)}
-// trees with blossom spheres
-for(let x of [-13,13,-10,10]){let trunk=new THREE.Mesh(new THREE.CylinderGeometry(.25,.5,5,8),wood);trunk.position.set(x,2.5,-1);scene.add(trunk);for(let i=0;i<18;i++){let b=new THREE.Mesh(new THREE.SphereGeometry(1.1,8,8),mat(i%2?'#f4a6c9':'#f8c8dc'));b.scale.set(.7,.5,.7);b.position.set(x+(Math.random()-.5)*4,4.5+Math.random()*2,-1+(Math.random()-.5)*3);scene.add(b)}}
-// lantern particles
-const petals=[];for(let i=0;i<80;i++){let p=new THREE.Mesh(new THREE.SphereGeometry(.045,6,6),mat('#ffd98b'));p.position.set((Math.random()-.5)*30,Math.random()*8,(Math.random()-.5)*25);scene.add(p);petals.push(p)}
-window.move=(x,z)=>{controls.target.x+=x;controls.target.z-=z;camera.position.x+=x;camera.position.z-=z};window.resetView=()=>{camera.position.set(0,8,19);controls.target.set(0,3,0)};
-let t=0;function animate(){requestAnimationFrame(animate);t+=.01;petals.forEach((p,i)=>{p.position.y+=Math.sin(t+i)*.003;p.position.x+=Math.sin(t*.5+i)*.002});controls.update();renderer.render(scene,camera)}animate();addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
-</script><script>
-let merit=0;window.act=(msg)=>{document.getElementById('toast').textContent=msg;document.getElementById('toast').classList.add('show');setTimeout(()=>document.getElementById('toast').classList.remove('show'),1800);merit+=10;document.getElementById('merit').textContent=merit.toLocaleString('vi-VN');};let n=prompt('Hoan nghênh bạn đến Sơn Tự Online! Nhập pháp danh hoặc tên (có thể bỏ qua):');if(n&&n.trim())document.getElementById('name').textContent=n.trim();</script></body></html>
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color('#91b9d8');
+scene.fog = new THREE.Fog('#91b9d8',30,90);
+
+const camera = new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.1,150);
+camera.position.set(0,8,20);
+
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(innerWidth,innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.2;
+document.querySelector('#scene').appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera,renderer.domElement);
+controls.target.set(0,3,0);
+controls.enableDamping=true;
+controls.maxPolarAngle=Math.PI/2.05;
+controls.minDistance=7;
+controls.maxDistance=35;
+
+scene.add(new THREE.HemisphereLight(0xffe7c5,0x43536a,2));
+
+const sun=new THREE.DirectionalLight(0xffd89a,3);
+sun.position.set(-8,16,8);
+sun.castShadow=true;
+scene.add(sun);
+
+function material(c,r=.7,m=0){
+return new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
+}
+
+const gold=material('#dca83f',.3,.6);
+const wood=material('#54251a');
+const red=material('#9d2e22');
+const stone=material('#b9b4a8');
+const green=material('#426b48');
+const water=material('#4e9da9',.2,.3);
+
+function box(x,y,z,sx,sy,sz,mat){
+const o=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),mat);
+o.position.set(x,y,z);
+o.castShadow=true;
+o.receiveShadow=true;
+scene.add(o);
+return o;
+}
+
+// Sân chùa
+box(0,-.35,0,70,.6,70,green);
+box(0,-.02,8,5,.12,24,stone);
+
+// Đường đá
+for(let z=-2;z<19;z+=2){
+box(0,.06,z,4.8,.04,.08,material('#8f887e'));
+}
+
+// Hồ sen
+for(const x of [-9,9]){
+box(x,0,5,5,.18,13,stone);
+box(x,.12,5,4.6,.08,12.6,water);
+
+for(let i=0;i<14;i++){
+let p=new THREE.Mesh(
+new THREE.SphereGeometry(.35,12,8),
+material(i%2?'#f5a8c5':'#f7d6e6')
+);
+p.scale.set(1,.18,.65);
+p.position.set(x+(Math.random()-.5)*3,.3,Math.random()*11-1);
+scene.add(p);
+}
+}
+
+// Chính điện
+box(0,.4,-4,17,.8,9,stone);
+box(0,.9,-4,16,.25,8,wood);
+box(0,3,-4,13,4,6,wood);
+box(0,5.15,-4,14,.25,6.5,gold);
+
+// Cột gỗ
+for(let x=-5.5;x<=5.5;x+=2.75){
+for(let z of [-6.5,-1.5]){
+let c=new THREE.Mesh(
+new THREE.CylinderGeometry(.22,.28,4.2,12),red
+);
+c.position.set(x,3,z);
+scene.add(c);
+
+let cap=new THREE.Mesh(
+new THREE.CylinderGeometry(.4,.35,.2,12),gold
+);
+cap.position.set(x,5.1,z);
+scene.add(cap);
+}
+}
+
+// Mái chùa
+function roof(y,w,d){
+let g=new THREE.ConeGeometry(w,1.25,4);
+g.rotateY(Math.PI/4);
+let r=new THREE.Mesh(g,red);
+r.position.set(0,y,-4);
+r.scale.set(1,1,d/w);
+scene.add(r);
+}
+
+roof(6.1,9,6.5);
+roof(7.4,6.7,5);
+roof(8.5,4.5,3.8);
+
+// Tượng Phật vàng
+const bud=new THREE.Group();
+
+let body=new THREE.Mesh(
+new THREE.SphereGeometry(1,32,24),gold
+);
+body.scale.set(.9,1.25,.65);
+body.position.y=2.2;
+bud.add(body);
+
+let head=new THREE.Mesh(
+new THREE.SphereGeometry(.55,24,20),gold
+);
+head.position.y=3.55;
+bud.add(head);
+
+let halo=new THREE.Mesh(
+new THREE.TorusGeometry(1.25,.09,12,64),gold
+);
+halo.position.set(0,3.2,-.2);
+bud.add(halo);
+
+let base=new THREE.Mesh(
+new THREE.CylinderGeometry(1.5,1.8,.55,32),
+material('#b66a22')
+);
+base.position.y=.65;
+bud.add(base);
+
+bud.position.set(0,1.4,-3.6);
+scene.add(bud);
+
+// Đèn lồng
+for(let x of [-7,-4,4,7]){
+let pole=new THREE.Mesh(
+new THREE.CylinderGeometry(.06,.1,3,8),wood
+);
+pole.position.set(x,1.5,1);
+scene.add(pole);
+
+let lamp=new THREE.Mesh(
+new THREE.SphereGeometry(.35,16,12),
+material('#ffce65',.2)
+);
+lamp.position.set(x,3.1,1);
+scene.add(lamp);
+
+let light=new THREE.PointLight('#ffbd58',1.5,7);
+light.position.copy(lamp.position);
+scene.add(light);
+}
+
+// Cây hoa
+for(let x of [-13,13,-10,10]){
+let trunk=new THREE.Mesh(
+new THREE.CylinderGeometry(.25,.5,5,8),wood
+);
+trunk.position.set(x,2.5,-1);
+scene.add(trunk);
+
+for(let i=0;i<18;i++){
+let b=new THREE.Mesh(
+new THREE.SphereGeometry(1.1,8,8),
+material(i%2?'#f4a6c9':'#f8c8dc')
+);
+b.scale.set(.7,.5,.7);
+b.position.set(
+x+(Math.random()-.5)*4,
+4.5+Math.random()*2,
+-1+(Math.random()-.5)*3
+);
+scene.add(b);
+}
+}
+
+// Cánh hoa lấp lánh
+const petals=[];
+for(let i=0;i<80;i++){
+let p=new THREE.Mesh(
+new THREE.SphereGeometry(.045,6,6),
+material('#ffd98b')
+);
+p.position.set(
+(Math.random()-.5)*30,
+Math.random()*8,
+(Math.random()-.5)*25
+);
+scene.add(p);
+petals.push(p);
+}
+
+// Điều khiển camera
+window.move=(x,z)=>{
+controls.target.x+=x;
+controls.target.z-=z;
+camera.position.x+=x;
+camera.position.z-=z;
+};
+
+window.resetView=()=>{
+camera.position.set(0,8,20);
+controls.target.set(0,3,0);
+};
+
+// Hiệu ứng chuyển động
+let t=0;
+
+function animate(){
+requestAnimationFrame(animate);
+t+=.01;
+
+petals.forEach((p,i)=>{
+p.position.y+=Math.sin(t+i)*.003;
+p.position.x+=Math.sin(t*.5+i)*.002;
+});
+
+controls.update();
+renderer.render(scene,camera);
+}
+
+animate();
+
+addEventListener('resize',()=>{
+camera.aspect=innerWidth/innerHeight;
+camera.updateProjectionMatrix();
+renderer.setSize(innerWidth,innerHeight);
+});
+</script>
+
+<script>
+let merit=0;
+
+window.act=(msg)=>{
+const toast=document.getElementById('toast');
+toast.textContent=msg;
+toast.style.display='block';
+
+setTimeout(()=>toast.style.display='none',1800);
+
+merit+=10;
+document.getElementById('merit').textContent=
+merit.toLocaleString('vi-VN');
+};
+
+let n=prompt('Hoan nghênh bạn đến Sơn Tự Online! Nhập pháp danh hoặc tên (có thể bỏ qua):');
+
+if(n&&n.trim()){
+document.getElementById('name').textContent=n.trim();
+}
+</script>
+</body>
+</html>
