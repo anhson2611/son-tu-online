@@ -52,6 +52,7 @@ Không gian tu học và lễ Phật trực tuyến
 <div id="toast" class="panel"></div>
 
 <div class="bottom">
+<button onclick="chapTay()">🙏 Chắp tay</button>
 <button onclick="diChuyen(0,-1)">🚶 Đi tới</button>
 <button onclick="diChuyen(0,1)">🚶 Đi lui</button>
 <button onclick="lePhat()">🙏 Quỳ lạy</button>
@@ -333,6 +334,25 @@ phatTu.add(chanPhai);
 // Đặt nhân vật
 phatTu.position.set(0, 0, 5);
 scene.add(phatTu);
+
+/* CHẮP TAY CẦU NGUYỆN */
+window.chapTay = () => {
+  const tayTrai = phatTu.children.find(
+    obj => obj.position.x < 0 && obj.position.y > 1
+  );
+
+  const tayPhai = phatTu.children.find(
+    obj => obj.position.x > 0 && obj.position.y > 1
+  );
+
+  if (!tayTrai || !tayPhai) return;
+
+  tayTrai.rotation.z = -1.15;
+  tayPhai.rotation.z = 1.15;
+
+  tayTrai.position.set(-0.18, 1.55, 0.25);
+  tayPhai.position.set(0.18, 1.55, 0.25);
+};
 
 // Quỳ lạy
 
