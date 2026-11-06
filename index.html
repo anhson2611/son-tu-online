@@ -335,10 +335,33 @@ phatTu.position.set(0, 0, 5);
 scene.add(phatTu);
 
 // Quỳ lạy
-window.lePhat=()=>{
-  phatTu.rotation.x=-.7;
-  setTimeout(()=>phatTu.rotation.x=0,1200);
+
+window.lePhat = async () => {
+  if (phatTu.userData.dangLe) return;
+  phatTu.userData.dangLe = true;
+
+  // Hạ người xuống
+  phatTu.position.y = -0.35;
+  phatTu.rotation.x = -0.5;
+
+  await new Promise(r => setTimeout(r, 500));
+
+  // Lạy 3 lần
+  for (let i = 0; i < 3; i++) {
+    phatTu.rotation.x = -0.9;
+    await new Promise(r => setTimeout(r, 450));
+
+    phatTu.rotation.x = -0.5;
+    await new Promise(r => setTimeout(r, 450));
+  }
+
+  // Đứng dậy
+  phatTu.rotation.x = 0;
+  phatTu.position.y = 0;
+
+  phatTu.userData.dangLe = false;
 };
+
 
 // Di chuyển
 window.diChuyen=(x,z)=>{
