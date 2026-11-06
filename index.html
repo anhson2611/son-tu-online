@@ -6,7 +6,17 @@
 <div class="left"><button class="btn active" onclick="act('Lễ Phật 🙏')">🙏 Lễ Phật</button><button class="btn" onclick="act('Đang niệm Nam mô A Di Đà Phật')">🪷 Niệm Phật</button><button class="btn" onclick="act('Đã thắp hương')">🕯️ Thắp hương</button><button class="btn" onclick="act('Đã dâng hoa')">🌸 Dâng hoa</button><button class="btn" onclick="act('Đã thỉnh chuông')">🔔 Thỉnh chuông</button><button class="btn" onclick="act('Đang thiền tĩnh tâm')">🧘 Thiền</button></div>
 <div class="counter glass">🌿 Công đức<br><strong id="merit">0</strong></div><div id="toast" class="toast glass">Nam mô A Di Đà Phật</div><div class="hint glass">🖱️ Kéo để xoay góc nhìn<br>Pinch/scroll để phóng to thu nhỏ<br>Chạm nút để thực hành</div>
 <div class="bottom"><button class="btn" onclick="move(0,1)">⬆ Tiến</button><button class="btn" onclick="move(-1,0)">⬅ Trái</button><button class="btn" onclick="move(1,0)">➡ Phải</button><button class="btn" onclick="move(0,-1)">⬇ Lùi</button><button class="btn" onclick="resetView()">🏯 Về chính điện</button></div>
-<script type="module">
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+  }
+}
+</script>
+
+  <script type="module">
+  
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
 const host=document.querySelector('#scene'),scene=new THREE.Scene();scene.background=new THREE.Color('#8ab7d7');scene.fog=new THREE.Fog('#b9c9d7',28,85);
