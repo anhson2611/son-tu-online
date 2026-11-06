@@ -1,256 +1,39 @@
-<!DOCTYPE html>
-
-<html lang="vi">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sơn Tự Online – Một chốn tâm an, vạn niềm thiện lành</title>
-<style>
- 
-:root{--gold:#e8c879;--deep:#291b42;--purple:#4c326d;--cream:#fff8e8}
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#332342;background:#fff8ed}
-.hero{min-height:300px;padding:42px 20px;text-align:center;color:#fff;background:linear-gradient(135deg,#25183d,#68418a 60%,#a46a8d);position:relative;overflow:hidden}
-.hero:before{content:"☸";position:absolute;font-size:260px;opacity:.07;right:-20px;top:-65px}
-.tag{letter-spacing:3px;color:#f5d99b;font-size:12px}.hero h1{font-size:clamp(30px,5vw,52px);margin:14px 0 8px}.hero p{max-width:650px;margin:0 auto;color:#f4eaf9;line-height:1.7}
-.wrap{max-width:1000px;margin:auto;padding:24px 16px}.intro{text-align:center;margin:8px auto 26px;max-width:700px;line-height:1.7}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
-.card{background:white;border:1px solid #eee1cf;border-radius:18px;padding:22px;box-shadow:0 8px 24px #4a2a120b}
-.buddha{text-align:center;background:linear-gradient(#fffaf0,#fff);}.icon{font-size:56px;display:block;margin:4px}.card h2{font-size:21px;margin:8px 0;color:#4b2d68}.card p{line-height:1.6;color:#6c5d70}
-button{border:0;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;background:#68418a;color:#fff;transition:.2s}button:hover{filter:brightness(1.08)}button.secondary{background:#f1e7f6;color:#55336e}button:disabled{opacity:.45;cursor:not-allowed}
-.actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:14px}
-.counter{font-size:14px;background:#f7f0fa;padding:9px 12px;border-radius:99px;display:inline-block;color:#56356e}
-form{display:grid;gap:12px}label{font-size:14px;font-weight:650}input,select{width:100%;padding:12px;border:1px solid #dfd3e6;border-radius:10px;font:inherit;background:#fff}
-.status{padding:13px;border-radius:12px;background:#f5eff8;line-height:1.6;margin:12px 0}.status.wait{background:#fff4df;color:#77501a}.status.ok{background:#eaf7ee;color:#24643b}
-.queue{max-height:260px;overflow:auto;padding-left:22px}.queue li{padding:6px 0;border-bottom:1px solid #f2e9f4}
-footer{text-align:center;padding:28px 16px;color:#86778c;font-size:13px}
-.notice{font-size:12px;color:#88788d;line-height:1.6}
- 
-/* ===== PHONG LE PHAT SON TU ONLINE ===== */
-.phong-le-3d {
-  margin: 30px auto;
-  max-width: 1200px;
-  padding: 25px;
-  border-radius: 25px;
-  background: linear-gradient(135deg, #24103d, #642d86, #210b37);
-  color: white;
-  text-align: center;
-  overflow: hidden;
-  box-shadow: 0 0 35px #d99aff55;
-}
-
-.phong-le-3d h2 {
-  font-size: clamp(25px, 4vw, 42px);
-  color: #ffe69c;
-  margin: 10px;
-}
-
-.phong-le-3d .ban-tho {
-  position: relative;
-  padding: 30px 10px;
-  background: radial-gradient(circle, #8a4bb4, #260d40);
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.phong-le-3d .tuong-phat {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  flex-wrap: wrap;
-}
-
-.phong-le-3d .tuong {
-  width: 220px;
-  padding: 20px;
-  border-radius: 20px;
-  background: #ffffff12;
-  border: 1px solid #ffd87566;
-}
-
-.phong-le-3d .tuong .hinh {
-  font-size: 100px;
-  filter: drop-shadow(0 0 18px gold);
-  animation: hao-quang 3s infinite alternate;
-}
-
-.phong-le-3d .tuong h3 {
-  color: #ffe69c;
-}
-
-.phong-le-3d .khói {
-  position: absolute;
-  font-size: 35px;
-  animation: khoi-huong 4s infinite ease-in-out;
-  opacity: .6;
-}
-
-.phong-le-3d .phat-tu {
-  display: inline-block;
-  font-size: 55px;
-  margin: 10px;
-  transform-origin: center bottom;
-  animation: cúi-lạy 4s infinite ease-in-out;
-}
-
-.phong-le-3d .phat-tu:nth-child(2) {
-  animation-delay: .5s;
-}
-.phong-le-3d .phat-tu:nth-child(3) {
-  animation-delay: 1s;
-}
-.phong-le-3d .phat-tu:nth-child(4) {
-  animation-delay: 1.5s;
-}
-
-.phong-le-3d .san-le {
-  background: linear-gradient(90deg,#f9c74f,#ffdf9e);
-  color: #43166a;
-  padding: 15px;
-  border-radius: 15px;
-  font-weight: bold;
-  margin-top: 20px;
-}
-
-@keyframes cúi-lạy {
-  0%,100% { transform: rotate(0deg) translateY(0); }
-  40%,60% { transform: rotate(35deg) translateY(12px); }
-}
-
-@keyframes hao-quang {
-  from { filter: drop-shadow(0 0 8px gold); }
-  to { filter: drop-shadow(0 0 28px #ffe680); }
-}
-
-@keyframes khoi-huong {
-  0% { transform: translateY(30px); opacity: 0; }
-  50% { opacity: .7; }
-  100% { transform: translateY(-50px); opacity: 0; }
-}
-
-</style>
-</head>
-<body>
-<header class="hero">
-<div class="tag">AN LẠC • TỪ BI • CHÁNH NIỆM</div>
-<h1>🪷 SƠN TỰ ONLINE 🪷</h1>
-<p>Gửi một nén tâm hương, thành kính lễ bái Quan Thế Âm Bồ Tát và Đức Phật Thích Ca Mâu Ni. Dù ở nơi đâu, cùng hướng tâm thiện lành.</p>
-</header>
-<main class="wrap">
-<p class="intro">Hoan nghênh quý Phật tử tham gia lễ Phật trực tuyến. Mỗi lượt tham gia là một phút lắng tâm, cầu bình an cho bản thân, gia đình và muôn loài.</p>
-<section class="grid">
-<article class="card buddha">
-<span class="icon">🙏</span><h2>Dâng hương & lễ bái</h2>
-<p>Thành tâm dâng hương, dâng hoa và cúi đầu lễ kính.</p>
-<div class="actions"><button onclick="ritual('Dâng hương')">🕯️ Dâng hương</button><button class="secondary" onclick="ritual('Lễ lạy')">🙏 Lễ lạy</button><button class="secondary" onclick="ritual('Dâng hoa')">🌼 Dâng hoa</button></div>
-<div id="ritualMsg" class="status" aria-live="polite">Xin giữ tâm thanh tịnh và thành kính.</div>
-</article>
-<article class="card buddha">
-<span class="icon">🪷</span><h2>Quan Thế Âm Bồ Tát</h2>
-<p>Nam mô Đại từ Đại bi cứu khổ cứu nạn Quan Thế Âm Bồ Tát.</p>
-<button onclick="ritual('Lễ Quan Thế Âm Bồ Tát')">🙏 Thành kính lễ bái</button>
-</article>
-<article class="card buddha">
-<span class="icon">☸️</span><h2>Đức Phật Như Lai</h2>
-<p>Nam mô Bổn Sư Thích Ca Mâu Ni Phật.</p>
-<button onclick="ritual('Lễ Đức Phật Như Lai')">🙏 Thành kính lễ bái</button>
-</article>
-</section>
-<section class="grid" style="margin-top:20px">
-<article class="card">
-<h2>🧘 Đăng ký tham gia lễ Phật</h2>
-<p>Phòng lễ có tối đa <b>200 Phật tử</b> cùng tham gia. Nếu đủ chỗ, bạn sẽ được vào phòng; nếu đã đủ, tên sẽ được xếp hàng chờ.</p>
-<div class="counter" id="seatCount">Đang tải số chỗ…</div>
-<div id="myStatus" class="status" style="display:none" aria-live="polite"></div>
-<form id="joinForm">
-<div><label for="name">Tên Phật tử / pháp danh</label><input id="name" maxlength="50" placeholder="Nhập tên của bạn" required></div>
-<div><label for="wish">Lời nguyện (không bắt buộc)</label><input id="wish" maxlength="150" placeholder="Ví dụ: cầu bình an cho gia đình"></div>
-<button type="submit" id="joinBtn">Đăng ký vào lễ</button>
-</form>
-<p class="notice">Trang demo lưu danh sách trên thiết bị/trình duyệt hiện tại. Để mọi người ở nhiều điện thoại cùng đăng ký và xếp hàng đồng bộ, cần kết nối cơ sở dữ liệu/hosting.</p>
-</article>
-<article class="card">
-<h2>🪑 Phòng lễ & hàng chờ</h2>
-<div class="status" id="roomInfo">Đang cập nhật…</div>
-<h3>Đang tham gia (tối đa 200)</h3><ol class="queue" id="participants"></ol>
-<h3>Danh sách chờ</h3><ol class="queue" id="waiting"></ol>
-<button class="secondary" onclick="leave()">Rời phòng / hủy đăng ký</button>
-</article>
-</section>
-</main>
-<footer>🪷 Sơn Tự Online • Nguyện đem công đức này hướng về khắp tất cả 🪷</footer>
-<script>
- const SUPABASE_URL = "https://iot rbyvenbdcbvqlknhh.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY =sb_publishable_Z7T7JkZBDvMxVuV2JDBGLg_hPFTc8o4;
-const CAP=200, KEY='chuaOnline_v1', MY='chuaOnline_myId';
-let myId=localStorage.getItem(MY);
-function getData(){try{return JSON.parse(localStorage.getItem(KEY))||{active:[],waiting:[]}}catch(e){return{active:[],waiting:[]}}}
-function save(d){localStorage.setItem(KEY,JSON.stringify(d))}
-function update(){
- const d=getData(); document.getElementById('seatCount').textContent=`${d.active.length}/${CAP} chỗ đang có người • ${Math.max(0,CAP-d.active.length)} chỗ trống`;
- document.getElementById('roomInfo').textContent=d.active.length<CAP?`Phòng còn ${CAP-d.active.length} chỗ. Hoan nghênh bạn tham gia!`:'Phòng đã đủ 200 người. Đăng ký mới sẽ vào hàng chờ.';
- document.getElementById('participants').innerHTML=d.active.map(x=>`<li>${esc(x.name)}${x.wish?` — <small>${esc(x.wish)}</small>`:''}</li>`).join('')||'<li>Chưa có người tham gia.</li>';
- document.getElementById('waiting').innerHTML=d.waiting.map((x,i)=>`<li>${esc(x.name)} <small>(vị trí ${i+1})</small></li>`).join('')||'<li>Chưa có người chờ.</li>';
- const mine=[...d.active,...d.waiting].find(x=>x.id===myId), box=document.getElementById('myStatus');
- if(mine){box.style.display='block';box.className='status '+(d.active.some(x=>x.id===myId)?'ok':'wait');box.textContent=d.active.some(x=>x.id===myId)?`🙏 ${mine.name}, bạn đang ở trong phòng lễ.`:`${mine.name}, bạn đang ở hàng chờ số ${d.waiting.findIndex(x=>x.id===myId)+1}. Khi có chỗ trống, hệ thống sẽ tự chuyển bạn vào phòng (trên trình duyệt này).`;}
- else box.style.display='none';
-}
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-document.getElementById('joinForm').addEventListener('submit',e=>{
- e.preventDefault();let name=document.getElementById('name').value.trim();if(!name)return;
- let d=getData();if([...d.active,...d.waiting].some(x=>x.id===myId)){alert('Bạn đã đăng ký rồi.');return}
- myId=crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random();localStorage.setItem(MY,myId);
- let person={id:myId,name,wish:document.getElementById('wish').value.trim(),time:Date.now()};
- if(d.active.length<CAP)d.active.push(person);else d.waiting.push(person);
- save(d);update();document.getElementById('joinBtn').textContent='Đã đăng ký';
-});
-function leave(){if(!myId)return;let d=getData();d.active=d.active.filter(x=>x.id!==myId);d.waiting=d.waiting.filter(x=>x.id!==myId);
- while(d.active.length<CAP&&d.waiting.length)d.active.push(d.waiting.shift());save(d);localStorage.removeItem(MY);myId=null;document.getElementById('joinBtn').textContent='Đăng ký vào lễ';update()}
-function ritual(action){document.getElementById('ritualMsg').textContent=`${action} 🙏 Nguyện tâm an, thân an, gia đình bình an và mọi chúng sinh đều được an lành.`}
-window.addEventListener('storage',update);update();
-</script>
-
-<!-- PHONG LE PHAT SON TU ONLINE -->
-<section class="phong-le-3d">
-
-  <h2>🪷 PHÒNG LỄ PHẬT TRỰC TUYẾN 🪷</h2>
-  <p>An lạc • Từ bi • Chánh niệm</p>
-
-  <div class="ban-tho">
-
-    <div class="khói" style="left:15%">☁️</div>
-    <div class="khói" style="left:50%;animation-delay:1s">☁️</div>
-    <div class="khói" style="left:80%;animation-delay:2s">☁️</div>
-
-    <div class="tuong-phat">
-
-      <div class="tuong">
-        <div class="hinh">🪷</div>
-        <h3>Quan Thế Âm Bồ Tát</h3>
-        <p>Nam mô Đại từ Đại bi cứu khổ cứu nạn</p>
-      </div>
-
-      <div class="tuong">
-        <div class="hinh">🧘</div>
-        <h3>Đức Phật Thích Ca</h3>
-        <p>Nam mô Bổn Sư Thích Ca Mâu Ni Phật</p>
-      </div>
-
-    </div>
-
-    <div class="san-le">
-      🪷 PHẬT TỬ ĐANG THÀNH KÍNH HÀNH LỄ 🪷
-    </div>
-
-    <div class="cac-phat-tu">
-      <span class="phat-tu">🙏</span>
-      <span class="phat-tu">🙇</span>
-      <span class="phat-tu">🙏</span>
-      <span class="phat-tu">🙇</span>
-      <span class="phat-tu">🙏</span>
-    </div>
-
-    <p>Nguyện đem công đức này hồi hướng khắp tất cả chúng sinh</p>
-
-  </div>
-</section>
-
-</body></html>
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>Sơn Tự Online</title><meta name="theme-color" content="#17152a"><style>
+*{box-sizing:border-box}body{margin:0;background:#101322;color:#fff;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;overflow:hidden}#scene{position:fixed;inset:0}canvas{display:block}.glass{background:rgba(20,19,36,.76);backdrop-filter:blur(12px);border:1px solid #ffffff26;box-shadow:0 8px 30px #0004;border-radius:18px}.top{position:fixed;top:12px;left:12px;right:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;pointer-events:none}.brand{padding:10px 16px;pointer-events:auto}.brand b{font-size:clamp(19px,3vw,28px);color:#ffd56a}.brand small{display:block;color:#e7d9b6}.status{padding:10px 14px;font-size:13px;pointer-events:auto}.left{position:fixed;left:12px;top:105px;display:grid;gap:8px}.btn{border:1px solid #ffffff24;color:white;background:rgba(27,25,42,.82);border-radius:14px;padding:12px 15px;font-size:14px;cursor:pointer;touch-action:manipulation}.btn:active,.btn.active{background:#a66b1d;border-color:#ffd46c;box-shadow:0 0 18px #ffbd4b55}.bottom{position:fixed;bottom:12px;left:12px;right:12px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.bottom .btn{min-width:100px}.toast{position:fixed;left:50%;top:90px;transform:translateX(-50%);padding:12px 18px;opacity:0;transition:.25s;pointer-events:none}.toast.show{opacity:1}.hint{position:fixed;right:12px;bottom:90px;padding:12px;max-width:190px;font-size:12px;color:#f5e8c8}.counter{position:fixed;right:12px;top:105px;padding:12px;font-size:13px}.counter strong{color:#ffdf80;font-size:20px}@media(max-width:600px){.left{top:100px}.left .btn{padding:10px;font-size:12px}.counter{top:100px}.hint{display:none}.bottom{bottom:8px}.bottom .btn{min-width:0;padding:10px;font-size:12px}.brand small{font-size:10px}}
+</style></head><body><div id="scene"></div>
+<div class="top"><div class="brand glass"><b>🪷 Sơn Tự Online</b><small>Không gian tu học và lễ Phật trực tuyến</small></div><div class="status glass">🙏 Phật tử: <b id="name">Khách vãng lai</b></div></div>
+<div class="left"><button class="btn active" onclick="act('Lễ Phật 🙏')">🙏 Lễ Phật</button><button class="btn" onclick="act('Đang niệm Nam mô A Di Đà Phật')">🪷 Niệm Phật</button><button class="btn" onclick="act('Đã thắp hương')">🕯️ Thắp hương</button><button class="btn" onclick="act('Đã dâng hoa')">🌸 Dâng hoa</button><button class="btn" onclick="act('Đã thỉnh chuông')">🔔 Thỉnh chuông</button><button class="btn" onclick="act('Đang thiền tĩnh tâm')">🧘 Thiền</button></div>
+<div class="counter glass">🌿 Công đức<br><strong id="merit">0</strong></div><div id="toast" class="toast glass">Nam mô A Di Đà Phật</div><div class="hint glass">🖱️ Kéo để xoay góc nhìn<br>Pinch/scroll để phóng to thu nhỏ<br>Chạm nút để thực hành</div>
+<div class="bottom"><button class="btn" onclick="move(0,1)">⬆ Tiến</button><button class="btn" onclick="move(-1,0)">⬅ Trái</button><button class="btn" onclick="move(1,0)">➡ Phải</button><button class="btn" onclick="move(0,-1)">⬇ Lùi</button><button class="btn" onclick="resetView()">🏯 Về chính điện</button></div>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+const host=document.querySelector('#scene'),scene=new THREE.Scene();scene.background=new THREE.Color('#8ab7d7');scene.fog=new THREE.Fog('#b9c9d7',28,85);
+const camera=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.1,150);camera.position.set(0,8,19);
+const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;host.appendChild(renderer.domElement);
+const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,3,0);controls.enableDamping=true;controls.maxPolarAngle=Math.PI/2.05;controls.minDistance=7;controls.maxDistance=35;
+scene.add(new THREE.HemisphereLight(0xffe7c5,0x43536a,2));const sun=new THREE.DirectionalLight(0xffd89a,3);sun.position.set(-8,16,8);sun.castShadow=true;scene.add(sun);
+const mat=(c,r=.7,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});const gold=mat('#dca83f',.3,.65),wood=mat('#54251a'),red=mat('#9d2e22'),stone=mat('#b9b4a8'),green=mat('#426b48'),water=mat('#4e9da9',.2,.3);
+function box(x,y,z,sx,sy,sz,material){let o=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),material);o.position.set(x,y,z);o.castShadow=o.receiveShadow=true;scene.add(o);return o}
+// ground and path
+box(0,-.35,0,70,.6,70,green);box(0,-.02,8,5,.12,24,stone);for(let z=-2;z<19;z+=2)box(0,.06,z,4.8,.04,.08,mat('#8f887e'));
+// lotus pools
+for(const x of [-9,9]){box(x,.0,5,5,.18,13,stone);box(x,.12,5,4.6,.08,12.6,water);for(let i=0;i<12;i++){let p=new THREE.Mesh(new THREE.SphereGeometry(.35,.12,8),mat(i%2?'#f5a8c5':'#f7d6e6'));p.scale.set(1,.18,.65);p.position.set(x+(Math.random()-.5)*3,.3,Math.random()*11-1);scene.add(p)}}
+// temple base, columns, hall
+box(0,.4,-4,17,.8,9,stone);box(0,.9,-4,16,.25,8,wood);box(0,3,-4,13,4,6,wood);box(0,5.15,-4,14,.25,6.5,gold);
+for(let x=-5.5;x<=5.5;x+=2.75)for(let z of [-6.5,-1.5]){let c=new THREE.Mesh(new THREE.CylinderGeometry(.22,.28,4.2,12),red);c.position.set(x,3,z);c.castShadow=true;scene.add(c);let cap=new THREE.Mesh(new THREE.CylinderGeometry(.4,.35,.2,12),gold);cap.position.set(x,5.1,z);scene.add(cap)}
+// roof layers (stylized pagoda)
+function roof(y,w,d){let g=new THREE.ConeGeometry(w,1.25,4);g.rotateY(Math.PI/4);let r=new THREE.Mesh(g,red);r.position.set(0,y,-4);r.scale.set(1,1,d/w);r.castShadow=true;scene.add(r);let trim=new THREE.Mesh(new THREE.ConeGeometry(w*1.04,.18,4),gold);trim.geometry.rotateY(Math.PI/4);trim.position.set(0,y-.55,-4);trim.scale.z=d/w;scene.add(trim)}roof(6.1,9,6.5);roof(7.4,6.7,5);roof(8.5,4.5,3.8);
+// Buddha golden silhouette seated
+const bud=new THREE.Group();let body=new THREE.Mesh(new THREE.SphereGeometry(1,32,24),gold);body.scale.set(.9,1.25,.65);body.position.y=2.2;bud.add(body);let head=new THREE.Mesh(new THREE.SphereGeometry(.55,24,20),gold);head.position.y=3.55;bud.add(head);let halo=new THREE.Mesh(new THREE.TorusGeometry(1.25,.09,12,64),gold);halo.position.set(0,3.2,-.2);bud.add(halo);let base=new THREE.Mesh(new THREE.CylinderGeometry(1.5,1.8,.55,32),mat('#b66a22'));base.position.y=.65;bud.add(base);bud.position.set(0,1.4,-3.6);scene.add(bud);
+// lamps
+for(let x of [-7,-4,4,7]){let pole=new THREE.Mesh(new THREE.CylinderGeometry(.06,.1,3,8),wood);pole.position.set(x,1.5,1);scene.add(pole);let lamp=new THREE.Mesh(new THREE.SphereGeometry(.35,16,12),mat('#ffce65',.2));lamp.position.set(x,3.1,1);scene.add(lamp);let light=new THREE.PointLight('#ffbd58',1.5,7);light.position.copy(lamp.position);scene.add(light)}
+// trees with blossom spheres
+for(let x of [-13,13,-10,10]){let trunk=new THREE.Mesh(new THREE.CylinderGeometry(.25,.5,5,8),wood);trunk.position.set(x,2.5,-1);scene.add(trunk);for(let i=0;i<18;i++){let b=new THREE.Mesh(new THREE.SphereGeometry(1.1,8,8),mat(i%2?'#f4a6c9':'#f8c8dc'));b.scale.set(.7,.5,.7);b.position.set(x+(Math.random()-.5)*4,4.5+Math.random()*2,-1+(Math.random()-.5)*3);scene.add(b)}}
+// lantern particles
+const petals=[];for(let i=0;i<80;i++){let p=new THREE.Mesh(new THREE.SphereGeometry(.045,6,6),mat('#ffd98b'));p.position.set((Math.random()-.5)*30,Math.random()*8,(Math.random()-.5)*25);scene.add(p);petals.push(p)}
+window.move=(x,z)=>{controls.target.x+=x;controls.target.z-=z;camera.position.x+=x;camera.position.z-=z};window.resetView=()=>{camera.position.set(0,8,19);controls.target.set(0,3,0)};
+let t=0;function animate(){requestAnimationFrame(animate);t+=.01;petals.forEach((p,i)=>{p.position.y+=Math.sin(t+i)*.003;p.position.x+=Math.sin(t*.5+i)*.002});controls.update();renderer.render(scene,camera)}animate();addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+</script><script>
+let merit=0;window.act=(msg)=>{document.getElementById('toast').textContent=msg;document.getElementById('toast').classList.add('show');setTimeout(()=>document.getElementById('toast').classList.remove('show'),1800);merit+=10;document.getElementById('merit').textContent=merit.toLocaleString('vi-VN');};let n=prompt('Hoan nghênh bạn đến Sơn Tự Online! Nhập pháp danh hoặc tên (có thể bỏ qua):');if(n&&n.trim())document.getElementById('name').textContent=n.trim();</script></body></html>
