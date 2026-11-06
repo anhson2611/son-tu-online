@@ -1,42 +1,1300 @@
+
 <!doctype html>
-<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sơn Tự Online V2</title>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sơn Tự Online</title>
+
 <style>
-*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden;background:#101426;color:#fff;font-family:system-ui}#scene{position:fixed;inset:0}header{position:fixed;top:12px;left:50%;transform:translateX(-50%);text-align:center;z-index:2;color:#f5d78c;text-shadow:0 2px 8px #000}header h1{margin:0;font-size:clamp(20px,4vw,32px)}header p{margin:4px;font-size:12px}.panel{position:fixed;z-index:3;top:90px;background:#20182fe0;border:1px solid #d6b66b66;border-radius:14px;padding:12px;backdrop-filter:blur(8px)}.left{left:10px;width:165px}.right{right:10px;width:160px}.panel h3{margin:0 0 8px;color:#f5d78c;font-size:13px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:6px}button{border:1px solid #d6b66b66;border-radius:9px;padding:9px 6px;background:#38294c;color:white;font-weight:600;cursor:pointer;font-size:12px}.stat{font-size:12px;margin:8px 0}.bottom{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:5px;background:#20182fe0;padding:8px;border-radius:12px}.toast{display:none;position:fixed;z-index:5;top:75px;left:50%;transform:translateX(-50%);background:#241936;border:1px solid #d6b66b;padding:10px;border-radius:10px}.hint{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);font-size:11px;background:#171326aa;padding:7px 12px;border-radius:20px;white-space:nowrap}@media(max-width:600px){.left{width:140px;left:6px;padding:8px}.right{width:125px;right:6px;padding:8px}.bottom{bottom:6px;flex-wrap:wrap;justify-content:center;max-width:96vw}.hint{bottom:100px}}
-</style><script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script></head>
-<body><div id="scene"></div><header><h1>🪷 SƠN TỰ ONLINE</h1><p>Không gian tĩnh tâm • Lễ Phật • Thiền định</p></header>
-<div class="panel left"><h3>🙏 NGHI LỄ</h3><div class="actions"><button onclick="chapTay()">🙏 Chắp tay</button><button onclick="lePhat()">🌼 Lễ Phật</button><button onclick="thapHuong()">🪔 Thắp hương</button><button onclick="dangHoa()">🌸 Dâng hoa</button><button onclick="thien()">🧘 Thiền</button><button onclick="thinhChuong()">🔔 Thỉnh chuông</button></div></div>
-<div class="panel right"><h3>🪷 PHẬT TỬ</h3><div class="stat">Pháp danh: <b id="name">Khách vãng lai</b></div><div class="stat">Công đức: <b id="merit" style="color:#f5d78c">0</b></div><div class="stat">Trạng thái: <span id="status">An nhiên</span></div><button onclick="doiTen()" style="width:100%">✍️ Đổi pháp danh</button></div>
-<div class="bottom"><button onclick="move(0,-1)">⬆</button><button onclick="move(-1,0)">⬅</button><button onclick="move(0,1)">⬇</button><button onclick="move(1,0)">➡</button><button onclick="resetView()">🎥 Góc nhìn</button></div><div class="hint">WASD / phím mũi tên để di chuyển • Kéo chuột xoay camera</div><div class="toast" id="toast"></div>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ overflow:hidden;
+ font-family:Arial,sans-serif;
+ background:#101b17;
+ color:white
+}
+#scene{position:fixed;inset:0}
+canvas{display:block}
+
+.top{
+ position:fixed;
+ top:15px;left:15px;right:15px;
+ display:flex;justify-content:space-between;
+}
+.brand,.status,.panel,.controls{
+ background:rgba(17,28,24,.88);
+ border:1px solid #d9bd7050;
+ border-radius:15px;
+ padding:12px;
+}
+.brand strong{color:#e9c875;font-size:18px}
+.panel{
+ position:fixed;right:15px;top:90px;
+ width:300px;max-height:80vh;overflow:auto
+}
+h3{color:#e9c875}
+button{
+ padding:10px;border-radius:10px;
+ border:1px solid #d7b65d;
+ background:#493b25;color:white;
+ cursor:pointer
+}
+button:hover{filter:brightness(1.2)}
+.actions{
+ display:grid;grid-template-columns:1fr 1fr;gap:8px
+}
+.controls{
+ position:fixed;bottom:15px;left:15px;
+ display:flex;gap:8px
+}
+#messages{
+ height:100px;overflow:auto;
+ background:#0002;padding:8px
+}
+#chat{display:flex;gap:5px;margin-top:8px}
+#chat input{
+ flex:1;min-width:0;padding:8px;
+ background:#101915;color:white
+}
+#login{
+ position:fixed;inset:0;
+ background:#07100dcc;
+ display:grid;place-items:center
+}
+.loginbox{
+ background:#18251e;border:1px solid #d9bd70;
+ border-radius:18px;padding:24px;width:90%;max-width:390px
+}
+.loginbox input{
+ width:100%;padding:12px;margin:8px 0
+}
+#toast{
+ position:fixed;bottom:90px;left:50%;
+ transform:translateX(-50%);
+ background:#17241e;padding:12px;
+ border-radius:10px;display:none
+}
+@media(max-width:700px){
+ .panel{top:auto;bottom:90px;right:10px;width:220px}
+ .controls{left:10px;right:10px;bottom:10px}
+ .controls button{flex:1}
+}
+</style>
+
+<script type="importmap">
+{
+ "imports":{
+ "three":"https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+ "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/",
+ "@supabase/supabase-js":"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm"
+ }
+}
+</script>
+</head>
+
+<body>
+
+<div id="scene"></div>
+
+<div class="top">
+ <div class="brand">
+  <strong>☸ SƠN TỰ ONLINE</strong><br>
+  Chốn bình an • Kết nối thiện lành
+ </div>
+ <div class="status">
+  Phật tử online: <b id="onlineCount">1</b>
+  · <span id="netStatus">Local</span>
+ </div>
+</div>
+
+<div class="panel">
+ <h3>🙏 Nghi lễ & tu tập</h3>
+ <p id="actionText">Chào mừng bạn đến với Sơn Tự.</p>
+
+ <div class="actions">
+  <button id="bow">🙏 Lễ Phật</button>
+  <button id="hands">🧎 Chắp tay</button>
+  <button id="incense">🪔 Thắp hương</button>
+  <button id="flower">🌸 Dâng hoa</button>
+  <button id="meditate">🧘 Thiền định</button>
+  <button id="bell">🔔 Thỉnh chuông</button>
+ </div>
+
+ <h3>💬 Phòng Phật tử</h3>
+ <div id="messages">Hoan nghênh quý Phật tử.</div>
+ <div id="chat">
+  <input id="chatInput" placeholder="Gửi lời chúc lành">
+  <button id="send">Gửi</button>
+ </div>
+</div>
+
+<div class="controls">
+ <button id="forward">▲</button>
+ <button id="left">◀</button>
+ <button id="back">▼</button>
+ <button id="right">▶</button>
+ <button id="reset">Về sân chùa</button>
+</div>
+
+<div id="toast"></div>
+
+<div id="login">
+ <div class="loginbox">
+  <h2>Nam mô 🙏</h2>
+  <p>Nhập pháp danh để vào Sơn Tự Online</p>
+  <input id="nameInput" value="Phật tử">
+  <button id="enter">Vào chùa</button>
+  <button id="guest">Khách vãng lai</button>
+ </div>
+</div>
+  
 <script type="module">
-import * as THREE from 'three';import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x11172b);scene.fog=new THREE.Fog(0x11172b,30,75);
-const camera=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.1,150);camera.position.set(0,9,22);
-const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;document.getElementById('scene').appendChild(renderer.domElement);
-const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,3,0);controls.enableDamping=true;controls.maxPolarAngle=Math.PI/2.05;controls.minDistance=7;controls.maxDistance=40;
-scene.add(new THREE.HemisphereLight(0xffe9c5,0x28304c,2));const sun=new THREE.DirectionalLight(0xffdf9b,3);sun.position.set(-8,15,8);sun.castShadow=true;scene.add(sun);
-const mat=(c,r=.8,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
-function box(w,h,d,m,x,y,z){let o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;scene.add(o);return o}
-function cyl(rt,rb,h,m,x,y,z,n=16){let o=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,n),m);o.position.set(x,y,z);o.castShadow=true;scene.add(o);return o}
-const stone=mat(0xaaa5a0),gold=mat(0xd8b15c,.35,.65),wood=mat(0x6b3827),roof=mat(0x34234f),cream=mat(0xf0dfb8),water=mat(0x264c70,.2,.25);
-box(48,.5,48,mat(0x4b4654),0,-.3,0);box(5,.08,30,stone,0,.02,5);for(let z=-8;z<20;z+=2.4)box(4.7,.035,1.9,mat(0x77717b),0,.08,z);
-box(13,1,9,stone,0,.6,-9);box(11,.35,7.5,wood,0,1.25,-9);box(10,.45,7,cream,0,1.6,-9);
-for(let x of [-4.4,-1.5,1.5,4.4])for(let z of [-11.7,-6.3])cyl(.22,.28,3.5,gold,x,3.3,z,12);
-box(11,.35,7,wood,0,5.2,-9);let r1=new THREE.Mesh(new THREE.ConeGeometry(8,2.1,4),roof);r1.rotation.y=Math.PI/4;r1.position.set(0,6.35,-9);r1.scale.set(1,.65,.65);scene.add(r1);let r2=new THREE.Mesh(new THREE.ConeGeometry(5.8,1.8,4),roof);r2.rotation.y=Math.PI/4;r2.position.set(0,7.6,-9);r2.scale.set(1,.65,.65);scene.add(r2);cyl(.12,.12,2,gold,0,8.6,-9,10);
-const bud=new THREE.Group();scene.add(bud);bud.position.set(0,2.2,-9.2);let bm=mat(0xe9bd62,.35,.25);let bbody=new THREE.Mesh(new THREE.SphereGeometry(1,24,16),bm);bbody.scale.set(1.15,.65,.65);bbody.position.y=.55;bud.add(bbody);let bhead=new THREE.Mesh(new THREE.SphereGeometry(.48,24,20),bm);bhead.position.y=1.45;bud.add(bhead);let halo=new THREE.Mesh(new THREE.TorusGeometry(1.15,.07,12,48),gold);halo.position.set(0,1.45,-.25);bud.add(halo);
-for(let x of [-10,10]){let p=new THREE.Mesh(new THREE.CylinderGeometry(3,3,.18,32),water);p.position.set(x,.05,2);scene.add(p);for(let i=0;i<8;i++){let a=i*Math.PI/4,l=new THREE.Mesh(new THREE.SphereGeometry(.28,10,8),mat(0xe98cb8));l.scale.set(1,.35,1);l.position.set(x+Math.cos(a)*1.5,.2,2+Math.sin(a)*1.5);scene.add(l)}}
-for(let x of [-7,7])for(let z of [-4,4,12]){cyl(.08,.12,2.5,wood,x,1.25,z,10);box(.7,.65,.7,gold,x,2.65,z);let light=new THREE.PointLight(0xffbd65,1.3,6);light.position.set(x,2.7,z);scene.add(light)}
-for(let x of [-15,-12,12,15]){cyl(.25,.4,3,wood,x,1.5,-1,10);for(let j=0;j<5;j++){let s=new THREE.Mesh(new THREE.SphereGeometry(1,12,10),mat(j%2?0x497b62:0x668d70));s.position.set(x+(Math.random()-.5),3.2+j*.35,-1+(Math.random()-.5));s.scale.set(1,.8,1);scene.add(s)}}
-// Avatar
-const avatar=new THREE.Group();scene.add(avatar);avatar.position.set(0,0,5);const skin=mat(0xe7b991),robe=mat(0xe5bd70),dark=mat(0x5a4736);
-const torso=new THREE.Mesh(new THREE.CylinderGeometry(.38,.55,1.25,16),robe);torso.position.y=1.25;avatar.add(torso);const head=new THREE.Mesh(new THREE.SphereGeometry(.29,20,16),skin);head.position.y=2.08;avatar.add(head);
-const legL=new THREE.Group();legL.position.set(-.18,.55,0);avatar.add(legL);let leg1=new THREE.Mesh(new THREE.CylinderGeometry(.13,.15,.65,12),dark);leg1.position.y=-.25;legL.add(leg1);const legR=legL.clone();legR.position.x=.18;avatar.add(legR);
-const armL=new THREE.Group();armL.position.set(-.42,1.7,0);avatar.add(armL);let upperL=new THREE.Mesh(new THREE.CylinderGeometry(.12,.15,.62,12),robe);upperL.position.y=-.28;armL.add(upperL);const handL=new THREE.Mesh(new THREE.SphereGeometry(.12,12,10),skin);handL.position.y=-.62;armL.add(handL);const armR=armL.clone();armR.position.x=.42;avatar.add(armR);
-const incense=new THREE.Group();let stick=new THREE.Mesh(new THREE.CylinderGeometry(.025,.025,.55,8),mat(0x9c6541));stick.position.y=.28;incense.add(stick);let ember=new THREE.PointLight(0xff5522,.5,1);ember.position.y=.58;incense.add(ember);incense.position.set(0,1.85,.4);avatar.add(incense);incense.visible=false;let flower=new THREE.Mesh(new THREE.SphereGeometry(.22,12,8),mat(0xf28bb7));flower.position.set(0,1.8,.45);avatar.add(flower);flower.visible=false;
-let merit=0,busy=false,walkT=0,meditating=false;const toast=s=>{let t=document.getElementById('toast');t.textContent=s;t.style.display='block';setTimeout(()=>t.style.display='none',1800)};function gain(s){merit+=10;document.getElementById('merit').textContent=merit.toLocaleString('vi-VN');document.getElementById('status').textContent=s;toast(s+' • +10 công đức')}
-window.chapTay=()=>{armL.rotation.set(-.2,0,-.9);armR.rotation.set(-.2,0,.9);handL.position.set(0,-.58,.12);gain('Chắp tay cầu nguyện')};
-window.lePhat=async()=>{if(busy)return;busy=true;meditating=false;for(let i=0;i<3;i++){avatar.position.y=-.25;avatar.rotation.x=-.55;head.rotation.x=-.3;await new Promise(r=>setTimeout(r,450));avatar.rotation.x=-1.05;head.rotation.x=-.5;await new Promise(r=>setTimeout(r,550));avatar.rotation.x=-.45;head.rotation.x=0;await new Promise(r=>setTimeout(r,350))}avatar.rotation.x=0;avatar.position.y=0;gain('Hoàn thành lễ Phật');busy=false};
-window.thapHuong=()=>{incense.visible=!incense.visible;gain(incense.visible?'Thắp hương':'Hạ hương')};window.dangHoa=()=>{flower.visible=!flower.visible;gain(flower.visible?'Dâng hoa':'Thu hoa')};window.thien=()=>{meditating=!meditating;avatar.position.y=meditating?-.25:0;legL.rotation.x=meditating?-1.2:0;legR.rotation.x=meditating?-1.2:0;gain(meditating?'An tọa thiền định':'Kết thúc thiền')};window.thinhChuong=()=>{toast('🔔 Tiếng chuông ngân vang');gain('Thỉnh chuông')};window.doiTen=()=>{let n=prompt('Nhập pháp danh:');if(n&&n.trim())document.getElementById('name').textContent=n.trim()};
-window.move=(x,z)=>{avatar.position.x=Math.max(-18,Math.min(18,avatar.position.x+x));avatar.position.z=Math.max(-15,Math.min(18,avatar.position.z+z));walkT+=1;armL.rotation.x=Math.sin(walkT)*.5;armR.rotation.x=-Math.sin(walkT)*.5;legL.rotation.x=-Math.sin(walkT)*.5;legR.rotation.x=Math.sin(walkT)*.5;controls.target.x=avatar.position.x;controls.target.z=avatar.position.z-2};window.resetView=()=>{camera.position.set(0,9,22);controls.target.set(0,3,0)};
-addEventListener('keydown',e=>{if(['ArrowUp','w','W'].includes(e.key))move(0,-.7);if(['ArrowDown','s','S'].includes(e.key))move(0,.7);if(['ArrowLeft','a','A'].includes(e.key))move(-.7,0);if(['ArrowRight','d','D'].includes(e.key))move(.7,0)});
-const particles=[];for(let i=0;i<70;i++){let q=new THREE.Mesh(new THREE.SphereGeometry(.035,6,6),mat(0xffdf9a));q.position.set((Math.random()-.5)*32,Math.random()*9,(Math.random()-.5)*28);scene.add(q);particles.push(q)}let clock=new THREE.Clock();function animate(){requestAnimationFrame(animate);let t=clock.getElapsedTime();particles.forEach((p,i)=>{p.position.y+=Math.sin(t+i)*.002;p.position.x+=Math.sin(t*.4+i)*.001});if(meditating)avatar.rotation.y=Math.sin(t*.3)*.04;controls.update();renderer.render(scene,camera)}animate();addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
-</script></body></html>
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {createClient} from '@supabase/supabase-js';
+
+const $=id=>document.getElementById(id);
+
+let displayName='Phật tử';
+let supabase=null,channel=null;
+let remoteUsers=new Map();
+
+const toast=s=>{
+ $('toast').textContent=s;
+ $('toast').style.display='block';
+ clearTimeout(toast.t);
+ toast.t=setTimeout(()=>$('toast').style.display='none',2600);
+};
+
+const scene=new THREE.Scene();
+scene.background=new THREE.Color('#b9d5d5');
+scene.fog=new THREE.Fog('#b9d5d5',35,95);
+
+const camera=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.1,200);
+camera.position.set(10,9,15);
+
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.15;
+
+$('scene').appendChild(renderer.domElement);
+
+const controls=new OrbitControls(camera,renderer.domElement);
+controls.target.set(0,2,0);
+controls.enableDamping=true;
+controls.maxPolarAngle=Math.PI*.48;
+controls.minDistance=5;
+controls.maxDistance=38;
+
+scene.add(new THREE.HemisphereLight('#fff4d8','#536b5b',2));
+
+const sun=new THREE.DirectionalLight('#fff0c5',3);
+sun.position.set(-10,20,12);
+sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);
+scene.add(sun);
+
+const mat=(color,rough=.8,metal=0)=>
+ new THREE.MeshStandardMaterial({
+  color,roughness:rough,metalness:metal
+ });
+
+const wood=mat('#75452b');
+const wood2=mat('#9a623a');
+const roofMat=mat('#8d3027');
+const gold=mat('#d6ad4f',.3,.7);
+const stone=mat('#b9b3a3');
+const green=mat('#386344');
+const cream=mat('#e8dfc8');
+
+function box(parent,x,y,z,sx,sy,sz,m){
+ let o=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),m);
+ o.position.set(x,y,z);
+ o.castShadow=o.receiveShadow=true;
+ parent.add(o);
+ return o;
+}
+
+function cylinder(parent,x,y,z,r1,r2,h,m,seg=16){
+ let o=new THREE.Mesh(
+  new THREE.CylinderGeometry(r1,r2,h,seg),m
+ );
+ o.position.set(x,y,z);
+ o.castShadow=true;
+ parent.add(o);
+ return o;
+}
+
+function roof(parent,x,y,z,w,d,m){
+ let g=new THREE.Group();
+ g.position.set(x,y,z);
+ parent.add(g);
+
+ let shape=new THREE.Shape();
+ shape.moveTo(-w/2,0);
+ shape.lineTo(0,.95);
+ shape.lineTo(w/2,0);
+ shape.lineTo(w/2,-.08);
+ shape.lineTo(0,.72);
+ shape.lineTo(-w/2,-.08);
+ shape.closePath();
+
+ let geo=new THREE.ExtrudeGeometry(shape,{
+  depth:d,bevelEnabled:false
+ });
+ geo.rotateX(Math.PI/2);
+
+ let mesh=new THREE.Mesh(geo,m);
+ mesh.position.z=d/2;
+ mesh.castShadow=true;
+ g.add(mesh);
+ return g;
+}
+
+// ===== SÂN CHÙA =====
+
+box(scene,0,-.35,0,70,.5,70,mat('#a9a18b'));
+box(scene,0,-.08,8,5,.12,24,mat('#c7bda7'));
+
+for(let x=-2.2;x<=2.2;x+=.55){
+ for(let z=-2;z<18;z+=.55){
+  box(scene,x,-.02,z,.52,.035,.52,
+   mat((Math.floor(x+z)%2)?'#b9ad98':'#d0c5ae'));
+ }
+}
+
+// ===== HỒ SEN =====
+
+const pondMat=mat('#5c9e9a',.25);
+
+for(const x of [-11,11]){
+ let p=new THREE.Mesh(
+  new THREE.CylinderGeometry(4,4,.25,48),pondMat
+ );
+ p.position.set(x,-.05,4);
+ scene.add(p);
+
+ for(let i=0;i<9;i++){
+  let a=i*Math.PI*2/9;
+  let l=new THREE.Mesh(
+   new THREE.CircleGeometry(.48,20),
+   mat('#e5b8c9')
+  );
+  l.rotation.x=-Math.PI/2;
+  l.position.set(
+   x+Math.cos(a)*2,-.0,4+Math.sin(a)*2
+  );
+  scene.add(l);
+  cylinder(scene,x+Math.cos(a)*2,.12,
+   4+Math.sin(a)*2,.08,.08,.12,gold,10);
+ }
+}
+
+// ===== CHÍNH ĐIỆN =====
+
+const hall=new THREE.Group();
+hall.position.set(0,0,-8);
+scene.add(hall);
+
+box(hall,0,1.4,0,14,2.8,9,cream);
+box(hall,0,2.85,0,14.5,.25,9.5,wood2);
+
+for(let x=-6;x<=6;x+=3){
+ for(let z=-3.8;z<=3.8;z+=3.8){
+  cylinder(hall,x,2.1,z,.18,.22,4.2,wood,12);
+ }
+}
+
+roof(hall,0,4.4,-4.6,15,9.4,roofMat);
+roof(hall,0,4.65,-4.6,15.8,9.8,wood2);
+
+for(let x=-4.5;x<=4.5;x+=1.5){
+ box(hall,x,1.55,4.56,1.1,2.1,.12,wood2);
+}
+
+box(hall,0,1.7,4.65,2.5,2.3,.16,gold);
+
+for(let i=0;i<3;i++){
+ box(hall,0,.25+i*.28,5.2+i*.4,
+  6-i*1.2,.25,.8,stone);
+}
+
+// ===== TƯỢNG PHẬT =====
+
+box(hall,0,1.15,-1.8,5,1.3,1.4,wood);
+box(hall,0,1.85,-1.8,4.5,.16,1.2,gold);
+
+const buddha=new THREE.Group();
+buddha.position.set(0,2,-2.4);
+hall.add(buddha);
+
+cylinder(buddha,0,.2,0,.9,.75,.35,gold,32);
+cylinder(buddha,0,.52,0,.68,.55,.45,gold,32);
+
+let body=new THREE.Mesh(
+ new THREE.SphereGeometry(.62,32,24),gold
+);
+body.scale.set(1,.9,.75);
+body.position.y=1.1;
+buddha.add(body);
+
+let head=new THREE.Mesh(
+ new THREE.SphereGeometry(.42,32,24),gold
+);
+head.position.y=1.85;
+buddha.add(head);
+
+for(let x of [-.43,.43]){
+ let e=new THREE.Mesh(
+  new THREE.SphereGeometry(.12,16,12),mat('#b68c37')
+ );
+ e.position.set(x,1.83,0);
+ buddha.add(e);
+}
+
+let ushnisha=new THREE.Mesh(
+ new THREE.SphereGeometry(.13,16,12),gold
+);
+ushnisha.position.y=2.25;
+buddha.add(ushnisha);
+
+// ===== CÂY VÀ ĐÈN LỒNG =====
+
+function tree(x,z){
+ let g=new THREE.Group();
+ g.position.set(x,0,z);
+ scene.add(g);
+
+ cylinder(g,0,1,0,.22,.3,2,wood);
+
+ for(let i=0;i<3;i++){
+  let s=new THREE.Mesh(
+   new THREE.SphereGeometry(1.4-i*.18,16,12),green
+  );
+  s.position.y=2.2+i*.8;
+  s.scale.set(1,.7,1);
+  s.castShadow=true;
+  g.add(s);
+ }
+}
+
+for(let x of [-17,-13,13,17]){
+ for(let z of [-15,-5,8,17])tree(x,z);
+}
+
+for(let x of [-5,5]){
+ for(let z of [2,10]){
+  cylinder(scene,x,2,z,.16,.16,3,wood);
+  let lantern=new THREE.Mesh(
+   new THREE.SphereGeometry(.45,16,12),mat('#f5b64e',.3)
+  );
+  lantern.position.set(x,3.7,z);
+  scene.add(lantern);
+
+  let light=new THREE.PointLight('#ffc46c',1.2,7);
+  light.position.copy(lantern.position);
+  scene.add(light);
+ }
+}
+
+// ===== NHÂN VẬT NHÀ SƯ / PHẬT TỬ =====
+
+function makeAvatar(kind='monk',color='#d8b27a'){
+ const g=new THREE.Group();
+ const robe=mat(kind==='monk'?'#b86d35':color);
+ const skin=mat('#d6a17e');
+ const dark=mat('#30231d');
+
+ const torso=new THREE.Mesh(
+  new THREE.CapsuleGeometry(.42,.85,5,10),robe
+ );
+ torso.position.y=1.35;
+ g.add(torso);
+
+ const head=new THREE.Mesh(
+  new THREE.SphereGeometry(.28,20,16),skin
+ );
+ head.position.y=2.15;
+ g.add(head);
+
+ if(kind==='monk'){
+  let cap=new THREE.Mesh(
+   new THREE.SphereGeometry(.285,20,12,0,Math.PI*2,0,Math.PI*.48),
+   dark
+  );
+  cap.position.y=2.25;
+  g.add(cap);
+ }
+
+ const arms=[];
+ for(let side of [-1,1]){
+  let arm=new THREE.Mesh(
+   new THREE.CapsuleGeometry(.12,.55,4,8),robe
+  );
+  arm.position.set(side*.48,1.55,.02);
+  arm.rotation.z=side*-.25;
+  g.add(arm);
+  arms.push(arm);
+ }
+
+ const legs=[];
+ for(let side of [-1,1]){
+  let leg=new THREE.Mesh(
+   new THREE.CapsuleGeometry(.14,.55,4,8),robe
+  );
+  leg.position.set(side*.18,.48,0);
+  g.add(leg);
+  legs.push(leg);
+ }
+
+ const hands=new THREE.Group();
+ hands.position.set(0,1.7,.38);
+ g.add(hands);
+
+ let h1=new THREE.Mesh(
+  new THREE.SphereGeometry(.1,12,10),skin
+ );
+ h1.position.x=-.09;
+ hands.add(h1);
+
+ let h2=h1.clone();
+ h2.position.x=.09;
+ hands.add(h2);
+
+ g.userData={arms,legs,hands,torso,kind};
+ return g;
+}
+
+const avatar=makeAvatar('monk');
+avatar.position.set(0,0,5);
+scene.add(avatar);
+
+function remoteAvatar(id,name,x,z){
+ let a=makeAvatar('lay','#6b8dbb');
+ a.position.set(x,0,z);
+ scene.add(a);
+ a.userData.remoteId=id;
+ return a;
+}
+</script>
+```
+
+---
+
+## PHẦN 3/3 — ĐIỀU KHIỂN, NGHI LỄ, CHAT, SUPABASE MULTIPLAYER
+
+<CodeBlock language="javascript" editable>
+<script type="module">
+// Lưu ý: phần này nối tiếp PHẦN 2.
+// Không mở thêm thẻ <script type="module"> nếu đã ghép phần 2.
+
+// ===== NGHI LỄ =====
+
+let mode='idle',modeTime=0;
+let keys={},mobileMove={};
+let particles=[];
+
+function setMode(m){
+ mode=m;
+ modeTime=0;
+
+ const msgs={
+  bow:'Bạn thành kính lễ Phật. 🙏',
+  hands:'Bạn chắp tay cung kính.',
+  incense:'Bạn đang thắp hương.',
+  flower:'Bạn dâng đóa hoa sen.',
+  meditate:'Bạn bắt đầu thiền định.',
+  bell:'Tiếng chuông chùa ngân vang…'
+ };
+
+ $('actionText').textContent=msgs[m]||'An trú.';
+ toast(msgs[m]||'An trú');
+}
+
+function action(m){
+ setMode(m);
+ if(channel){
+  channel.send({
+   type:'broadcast',event:'ritual',
+   payload:{name:displayName,action:m}
+  });
+ }
+}
+
+$('bow').onclick=()=>action('bow');
+$('hands').onclick=()=>action('hands');
+
+$('incense').onclick=()=>{
+ action('incense');
+ spawnEffect('#f4d7a0');
+};
+
+$('flower').onclick=()=>{
+ action('flower');
+ spawnEffect('#ed9dc8');
+};
+
+$('meditate').onclick=()=>action('meditate');
+
+$('bell').onclick=()=>{
+ action('bell');
+ bellSound();
+};
+
+// ===== HIỆU ỨNG =====
+
+function spawnEffect(color){
+ for(let i=0;i<18;i++){
+  let p=new THREE.Mesh(
+   new THREE.SphereGeometry(.06,8,8),
+   new THREE.MeshBasicMaterial({color})
+  );
+
+  p.position.set(
+   avatar.position.x+(Math.random()-.5),
+   1+Math.random(),
+   avatar.position.z+(Math.random()-.5)
+  );
+
+  scene.add(p);
+
+  let v=new THREE.Vector3(
+   (Math.random()-.5)*.02,
+   .025+Math.random()*.03,
+   (Math.random()-.5)*.02
+  );
+
+  particles.push({p,v,life:100});
+ }
+}
+
+function bellSound(){
+ try{
+  let ctx=new AudioContext();
+  let o=ctx.createOscillator();
+  let gain=ctx.createGain();
+
+  o.type='sine';
+  o.frequency.setValueAtTime(440,ctx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(110,ctx.currentTime+2);
+
+  gain.gain.setValueAtTime(.25,ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+3);
+
+  o.connect(gain);
+  gain.connect(ctx.destination);
+  o.start();
+  o.stop(ctx.currentTime+3);
+ }catch(e){}
+}
+
+// ===== CHAT =====
+
+function addMessage(name,text){
+ let el=document.createElement('div');
+ el.textContent=name+': '+text;
+ $('messages').appendChild(el);
+ $('messages').scrollTop=$('messages').scrollHeight;
+
+ while($('messages').children.length>35){
+  $('messages').firstChild.remove();
+ }
+}
+
+$('send').onclick=sendChat;
+
+$('chatInput').onkeydown=e=>{
+ if(e.key==='Enter')sendChat();
+};
+
+function sendChat(){
+ let t=$('chatInput').value.trim();
+ if(!t)return;
+
+ addMessage(displayName,t);
+ $('chatInput').value='';
+
+ if(channel){
+  channel.send({
+   type:'broadcast',event:'chat',
+   payload:{name:displayName,text:t}
+  });
+ }
+}
+
+// ===== DI CHUYỂN =====
+
+onkeydown=e=>{keys[e.key.toLowerCase()]=true};
+onkeyup=e=>{keys[e.key.toLowerCase()]=false};
+
+function hold(id,key){
+ $(id).onpointerdown=e=>{
+  e.preventDefault();
+  mobileMove[key]=true;
+ };
+
+ $(id).onpointerup=
+ $(id).onpointerleave=
+ $(id).onpointercancel=()=>mobileMove[key]=false;
+}
+
+hold('forward','w');
+hold('back','s');
+hold('left','a');
+hold('right','d');
+
+$('reset').onclick=()=>{
+ avatar.position.set(0,0,5);
+ controls.target.set(0,2,0);
+ toast('Đã trở về sân chùa');
+};
+
+function moveAvatar(dt){
+ let f=keys.w||keys.arrowup||mobileMove.w;
+ let b=keys.s||keys.arrowdown||mobileMove.s;
+ let l=keys.a||keys.arrowleft||mobileMove.a;
+ let r=keys.d||keys.arrowright||mobileMove.d;
+
+ let dx=(r?1:0)-(l?1:0);
+ let dz=(b?1:0)-(f?1:0);
+
+ let v=new THREE.Vector3(dx,0,dz);
+
+ if(v.lengthSq()){
+  v.normalize().multiplyScalar(dt*4);
+  avatar.position.add(v);
+  avatar.rotation.y=Math.atan2(v.x,v.z);
+  if(mode==='idle')mode='walk';
+ }else if(mode==='walk')mode='idle';
+
+ avatar.position.x=Math.max(-25,Math.min(25,avatar.position.x));
+ avatar.position.z=Math.max(-22,Math.min(22,avatar.position.z));
+}
+
+// ===== HOẠT ẢNH =====
+
+function animateAvatar(dt){
+ modeTime+=dt;
+ let u=avatar.userData;
+
+ if(mode==='bow'){
+  let phase=modeTime%2.3;
+  u.torso.rotation.x=
+   phase<.7?Math.sin(phase/.7*Math.PI)*.9:0;
+
+  if(modeTime>2.3){
+   mode='idle';
+   u.torso.rotation.x=0;
+  }
+
+ }else if(mode==='hands'){
+  u.arms[0].rotation.z=.9;
+  u.arms[1].rotation.z=-.9;
+  u.hands.position.y=1.8;
+
+ }else if(mode==='meditate'){
+  avatar.position.y=Math.sin(modeTime*2)*.025;
+  u.legs.forEach(l=>l.rotation.x=.7);
+
+ }else if(mode==='walk'){
+  u.arms[0].rotation.z=Math.sin(modeTime*8)*.4;
+  u.arms[1].rotation.z=-Math.sin(modeTime*8)*.4;
+
+ }else{
+  u.arms.forEach((a,i)=>a.rotation.z=(i?-.25:.25));
+  u.torso.rotation.x=0;
+  avatar.position.y=0;
+  u.legs.forEach(l=>l.rotation.x=0);
+ }
+}
+
+// ===== MULTIPLAYER SUPABASE =====
+
+function updateRemote(payload){
+ if(!payload||payload.id===sessionId)return;
+
+ let a=remoteUsers.get(payload.id);
+
+ if(!a){
+  a=remoteAvatar(
+   payload.id,payload.name,payload.x,payload.z
+  );
+  remoteUsers.set(payload.id,a);
+ }
+
+ a.position.set(payload.x,0,payload.z);
+ a.rotation.y=payload.rot||0;
+}
+
+let sessionId='local-'+Math.random().toString(36).slice(2);
+let lastSync=0;
+
+async function connectSupabase(){
+ const URL='YOUR_SUPABASE_URL';
+ const KEY='YOUR_SUPABASE_ANON_KEY';
+
+ if(URL.startsWith('YOUR_')||KEY.startsWith('YOUR_')){
+  return false;
+ }
+
+ supabase=createClient(URL,KEY);
+
+ channel=supabase.channel('son-tu-online-room',{
+  config:{
+   presence:{key:sessionId},
+   broadcast:{self:false}
+  }
+ });
+
+ channel
+ .on('broadcast',{event:'position'},({payload})=>updateRemote(payload))
+ .on('broadcast',{event:'chat'},({payload})=>addMessage(payload.name,payload.text))
+ .on('broadcast',{event:'ritual'},({payload})=>
+  addMessage('🙏',payload.name+' đang '+payload.action))
+ .on('presence',{event:'sync'},()=>{
+  $('onlineCount').textContent=
+   Object.keys(channel.presenceState()).length||1;
+ });
+
+ await channel.subscribe(async status=>{
+  if(status==='SUBSCRIBED'){
+   await channel.track({
+    name:displayName,
+    online_at:new Date().toISOString()
+   });
+
+   $('netStatus').textContent='Realtime kết nối';
+   $('netStatus').style.color='#9de4b3';
+   toast('Đã kết nối phòng Phật tử online');
+  }
+ });
+
+ return true;
+}
+
+// ===== ĐĂNG NHẬP =====
+
+$('enter').onclick=$('guest').onclick=async()=>{
+ displayName=(
+  $('nameInput').value.trim()||'Phật tử'
+ ).slice(0,24);
+
+ $('login').style.display='none';
+
+ addMessage('Hệ thống','Chào '+displayName+'! Chúc bạn an lạc.');
+
+ let ok=await connectSupabase();
+
+ if(!ok){
+  toast('Đang ở chế độ local. Cần cấu hình Supabase.');
+ }
+};
+
+// ===== VÒNG LẶP 3D =====
+
+window.addEventListener('resize',()=>{
+ camera.aspect=innerWidth/innerHeight;
+ camera.updateProjectionMatrix();
+ renderer.setSize(innerWidth,innerHeight);
+});
+
+const clock=new THREE.Clock();
+
+function tick(){
+ requestAnimationFrame(tick);
+
+ let dt=Math.min(clock.getDelta(),.05);
+
+ moveAvatar(dt);
+ animateAvatar(dt);
+
+ controls.target.lerp(
+  new THREE.Vector3(
+   avatar.position.x,1.8,avatar.position.z
+  ),.04
+ );
+
+ controls.update();
+
+ particles.forEach((q,i)=>{
+  q.p.position.add(q.v);
+  q.life--;
+
+  if(q.life<0){
+   scene.remove(q.p);
+   particles.splice(i,1);
+  }
+ });
+
+ if(channel&&performance.now()-lastSync>100){
+  lastSync=performance.now();
+
+  channel.send({
+   type:'broadcast',
+   event:'position',
+   payload:{
+    id:sessionId,
+    name:displayName,
+    x:avatar.position.x,
+    z:avatar.position.z,
+    rot:avatar.rotation.y
+   }
+  });
+ }
+
+ renderer.render(scene,camera);
+}
+
+tick();
+</script>
+```
+
+---
+
+## Cách ghép 3 phần thành một file
+
+**Lưu ý rất quan trọng:** Phần 1 đã kết thúc bằng `</body></html>`. Khi ghép, bạn cần xóa hai dòng đó ở cuối Phần 1, rồi đặt Phần 2 và Phần 3 vào trước `</body></html>`.
+
+Cấu trúc đúng:
+
+```html
+<!doctype html>
+<html>
+<head>
+    <!-- PHẦN 1: CSS + importmap -->
+</head>
+<body>
+
+    <!-- PHẦN 1: giao diện -->
+
+    <!-- PHẦN 2: script mở đầu + cảnh 3D -->
+
+    <!-- PHẦN 3: nghi lễ + multiplayer + tick -->
+
+</body>
+</html>
+```
+
+**Lưu ý:** Code này tạo cảnh 3D và các hoạt động cơ bản; phần multiplayer chỉ hoạt động sau khi nhập cấu hình Supabase thật.
+
+<script type="module">
+// PHẦN 3 - NGHI LỄ, CHAT, MULTIPLAYER
+
+// ===== NGHI LỄ =====
+
+let mode='idle',modeTime=0;
+let keys={},mobileMove={};
+let particles=[];
+
+function setMode(m){
+ mode=m;
+ modeTime=0;
+
+ const msgs={
+  bow:'Bạn thành kính lễ Phật. 🙏',
+  hands:'Bạn chắp tay cung kính.',
+  incense:'Bạn đang thắp hương.',
+  flower:'Bạn dâng đóa hoa sen.',
+  meditate:'Bạn bắt đầu thiền định.',
+  bell:'Tiếng chuông chùa ngân vang…'
+ };
+
+ $('actionText').textContent=msgs[m]||'An trú.';
+ toast(msgs[m]||'An trú');
+}
+
+function action(m){
+ setMode(m);
+ if(channel){
+  channel.send({
+   type:'broadcast',
+   event:'ritual',
+   payload:{name:displayName,action:m}
+  });
+ }
+}
+
+$('bow').onclick=()=>action('bow');
+$('hands').onclick=()=>action('hands');
+
+$('incense').onclick=()=>{
+ action('incense');
+ spawnEffect('#f4d7a0');
+};
+
+$('flower').onclick=()=>{
+ action('flower');
+ spawnEffect('#ed9dc8');
+};
+
+$('meditate').onclick=()=>action('meditate');
+
+$('bell').onclick=()=>{
+ action('bell');
+ bellSound();
+};
+
+// ===== HIỆU ỨNG =====
+
+function spawnEffect(color){
+ for(let i=0;i<18;i++){
+  let p=new THREE.Mesh(
+   new THREE.SphereGeometry(.06,8,8),
+   new THREE.MeshBasicMaterial({color})
+  );
+
+  p.position.set(
+   avatar.position.x+(Math.random()-.5),
+   1+Math.random(),
+   avatar.position.z+(Math.random()-.5)
+  );
+
+  scene.add(p);
+
+  let v=new THREE.Vector3(
+   (Math.random()-.5)*.02,
+   .025+Math.random()*.03,
+   (Math.random()-.5)*.02
+  );
+
+  particles.push({p,v,life:100});
+ }
+}
+
+// ===== ÂM THANH CHUÔNG =====
+
+function bellSound(){
+ try{
+  let ctx=new AudioContext();
+  let o=ctx.createOscillator();
+  let gain=ctx.createGain();
+
+  o.type='sine';
+  o.frequency.setValueAtTime(440,ctx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(
+   110,ctx.currentTime+2
+  );
+
+  gain.gain.setValueAtTime(.25,ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(
+   .001,ctx.currentTime+3
+  );
+
+  o.connect(gain);
+  gain.connect(ctx.destination);
+
+  o.start();
+  o.stop(ctx.currentTime+3);
+ }catch(e){}
+}
+
+// ===== CHAT =====
+
+function addMessage(name,text){
+ let el=document.createElement('div');
+ el.textContent=name+': '+text;
+
+ $('messages').appendChild(el);
+ $('messages').scrollTop=$('messages').scrollHeight;
+
+ while($('messages').children.length>35){
+  $('messages').firstChild.remove();
+ }
+}
+
+$('send').onclick=sendChat;
+
+$('chatInput').onkeydown=e=>{
+ if(e.key==='Enter')sendChat();
+};
+
+function sendChat(){
+ let t=$('chatInput').value.trim();
+ if(!t)return;
+
+ addMessage(displayName,t);
+ $('chatInput').value='';
+
+ if(channel){
+  channel.send({
+   type:'broadcast',
+   event:'chat',
+   payload:{name:displayName,text:t}
+  });
+ }
+}
+
+// ===== DI CHUYỂN NHÂN VẬT =====
+
+onkeydown=e=>{
+ keys[e.key.toLowerCase()]=true;
+};
+
+onkeyup=e=>{
+ keys[e.key.toLowerCase()]=false;
+};
+
+function hold(id,key){
+ $(id).onpointerdown=e=>{
+  e.preventDefault();
+  mobileMove[key]=true;
+ };
+
+ $(id).onpointerup=
+ $(id).onpointerleave=
+ $(id).onpointercancel=()=>{
+  mobileMove[key]=false;
+ };
+}
+
+hold('forward','w');
+hold('back','s');
+hold('left','a');
+hold('right','d');
+
+// ===== ĐIỂM HỒI SINH =====
+
+$('reset').onclick=()=>{
+ avatar.position.set(0,0,5);
+ controls.target.set(0,2,0);
+ toast('Đã trở về sân chùa');
+};
+
+// ===== CHUYỂN ĐỘNG =====
+
+function moveAvatar(dt){
+ let f=keys.w||keys.arrowup||mobileMove.w;
+ let b=keys.s||keys.arrowdown||mobileMove.s;
+ let l=keys.a||keys.arrowleft||mobileMove.a;
+ let r=keys.d||keys.arrowright||mobileMove.d;
+
+ let dx=(r?1:0)-(l?1:0);
+ let dz=(b?1:0)-(f?1:0);
+
+ let v=new THREE.Vector3(dx,0,dz);
+
+ if(v.lengthSq()){
+  v.normalize().multiplyScalar(dt*4);
+  avatar.position.add(v);
+  avatar.rotation.y=Math.atan2(v.x,v.z);
+
+  if(mode==='idle')mode='walk';
+ }else if(mode==='walk'){
+  mode='idle';
+ }
+
+ avatar.position.x=Math.max(
+  -25,Math.min(25,avatar.position.x)
+ );
+
+ avatar.position.z=Math.max(
+  -22,Math.min(22,avatar.position.z)
+ );
+}
+
+// ===== HOẠT ẢNH NHÂN VẬT =====
+
+function animateAvatar(dt){
+ modeTime+=dt;
+ let u=avatar.userData;
+
+ if(mode==='bow'){
+  let phase=modeTime%2.3;
+
+  u.torso.rotation.x=
+   phase<.7?Math.sin(phase/.7*Math.PI)*.9:0;
+
+  if(modeTime>2.3){
+   mode='idle';
+   u.torso.rotation.x=0;
+  }
+
+ }else if(mode==='hands'){
+  u.arms[0].rotation.z=.9;
+  u.arms[1].rotation.z=-.9;
+  u.hands.position.y=1.8;
+
+ }else if(mode==='meditate'){
+  avatar.position.y=Math.sin(modeTime*2)*.025;
+  u.legs.forEach(l=>l.rotation.x=.7);
+
+ }else if(mode==='walk'){
+  u.arms[0].rotation.z=Math.sin(modeTime*8)*.4;
+  u.arms[1].rotation.z=-Math.sin(modeTime*8)*.4;
+
+ }else{
+  u.arms.forEach((a,i)=>{
+   a.rotation.z=i?-.25:.25;
+  });
+
+  u.torso.rotation.x=0;
+  avatar.position.y=0;
+  u.legs.forEach(l=>l.rotation.x=0);
+ }
+}
+
+// ===== MULTIPLAYER SUPABASE =====
+
+function updateRemote(payload){
+ if(!payload||payload.id===sessionId)return;
+
+ let a=remoteUsers.get(payload.id);
+
+ if(!a){
+  a=remoteAvatar(
+   payload.id,payload.name,
+   payload.x,payload.z
+  );
+
+  remoteUsers.set(payload.id,a);
+ }
+
+ a.position.set(payload.x,0,payload.z);
+ a.rotation.y=payload.rot||0;
+}
+
+let sessionId='local-'+Math.random().toString(36).slice(2);
+let lastSync=0;
+
+async function connectSupabase(){
+ const URL='YOUR_SUPABASE_URL';
+ const KEY='YOUR_SUPABASE_ANON_KEY';
+
+ if(URL.startsWith('YOUR_')||KEY.startsWith('YOUR_')){
+  return false;
+ }
+
+ supabase=createClient(URL,KEY);
+
+ channel=supabase.channel('son-tu-online-room',{
+  config:{
+   presence:{key:sessionId},
+   broadcast:{self:false}
+  }
+ });
+
+ channel
+ .on('broadcast',{event:'position'},
+  ({payload})=>updateRemote(payload)
+ )
+ .on('broadcast',{event:'chat'},
+  ({payload})=>addMessage(payload.name,payload.text)
+ )
+ .on('broadcast',{event:'ritual'},
+  ({payload})=>{
+   addMessage('🙏',payload.name+' đang '+payload.action);
+  }
+ )
+ .on('presence',{event:'sync'},()=>{
+  $('onlineCount').textContent=
+   Object.keys(channel.presenceState()).length||1;
+ });
+
+ await channel.subscribe(async status=>{
+  if(status==='SUBSCRIBED'){
+   await channel.track({
+    name:displayName,
+    online_at:new Date().toISOString()
+   });
+
+   $('netStatus').textContent='Realtime kết nối';
+   $('netStatus').style.color='#9de4b3';
+
+   toast('Đã kết nối phòng Phật tử online');
+  }
+ });
+
+ return true;
+}
+
+// ===== ĐĂNG NHẬP =====
+
+$('enter').onclick=$('guest').onclick=async()=>{
+ displayName=(
+  $('nameInput').value.trim()||'Phật tử'
+ ).slice(0,24);
+
+ $('login').style.display='none';
+
+ addMessage(
+  'Hệ thống',
+  'Chào '+displayName+'! Chúc bạn an lạc.'
+ );
+
+ let ok=await connectSupabase();
+
+ if(!ok){
+  toast('Đang ở chế độ local. Cần cấu hình Supabase.');
+ }
+};
+
+// ===== THAY ĐỔI KÍCH THƯỚC =====
+
+window.addEventListener('resize',()=>{
+ camera.aspect=innerWidth/innerHeight;
+ camera.updateProjectionMatrix();
+ renderer.setSize(innerWidth,innerHeight);
+});
+
+// ===== VÒNG LẶP 3D =====
+
+const clock=new THREE.Clock();
+
+function tick(){
+ requestAnimationFrame(tick);
+
+ let dt=Math.min(clock.getDelta(),.05);
+
+ moveAvatar(dt);
+ animateAvatar(dt);
+
+ controls.target.lerp(
+  new THREE.Vector3(
+   avatar.position.x,
+   1.8,
+   avatar.position.z
+  ),.04
+ );
+
+ controls.update();
+
+ particles.forEach((q,i)=>{
+  q.p.position.add(q.v);
+  q.life--;
+
+  if(q.life<0){
+   scene.remove(q.p);
+   particles.splice(i,1);
+  }
+ });
+
+ if(channel&&performance.now()-lastSync>100){
+  lastSync=performance.now();
+
+  channel.send({
+   type:'broadcast',
+   event:'position',
+   payload:{
+    id:sessionId,
+    name:displayName,
+    x:avatar.position.x,
+    z:avatar.position.z,
+    rot:avatar.rotation.y
+   }
+  });
+ }
+
+ renderer.render(scene,camera);
+}
+
+tick();
+</script>
+</body>
+</html>
