@@ -4,56 +4,29 @@ import {OrbitControls,Stars} from '@react-three/drei';
 import {supabase} from './lib/supabase';
 import {Send} from 'lucide-react';
 
-function Lantern({position}) {
- return <group position={position}>
-  <mesh position={[0,1.4,0]}><cylinderGeometry args={[.08,.08,.5,8]}/><meshStandardMaterial color="#39220e"/></mesh>
-  <mesh position={[0,1,0]}><boxGeometry args={[.42,.48,.42]}/><meshStandardMaterial color="#ffb84b" emissive="#ff8b19" emissiveIntensity={1.8}/></mesh>
-  <mesh position={[0,.72,0]}><coneGeometry args={[.28,.15,8]}/><meshStandardMaterial color="#7e4314"/></mesh>
- </group>;
+const gold='#d9ad54';
+function Pillar({x,z}){return <group position={[x,0,z]}><mesh position={[0,1.5,0]}><cylinderGeometry args={[.18,.22,3,12]}/><meshStandardMaterial color="#a77a3e" metalness:.45/></mesh><mesh position={[0,3.05,0]}><boxGeometry args={[.55,.18,.55]}/><meshStandardMaterial color="#d9ad54"/></mesh></group>}
+function Roof({y,w}){return <group position={[0,y,0]}><mesh><boxGeometry args={[w,.22,w*.72]}/><meshStandardMaterial color="#4a1714" roughness:.3/></mesh><mesh position={[0,.28,0]} rotation={[0,0,0]}><coneGeometry args={[w*.68,.65,4]}/><meshStandardMaterial color="#9c3423" metalness:.25/></mesh><mesh position={[0,.68,0]}><sphereGeometry args={[.12,12,12]}/><meshStandardMaterial color={gold} metalness:.7/></mesh></group>}
+function Temple(){return <group position={[0,0,-9]}>{[[-3,-2],[3,-2],[-3,2],[3,2]].map(([x,z],i)=><Pillar key={i} x={x} z={z}/>)}<mesh position={[0,.35,0]}><boxGeometry args={[7,.7,5]}/><meshStandardMaterial color="#7c542b"/></mesh><Roof y={3.1} w={9}/><Roof y={4.2} w={7}/><Roof y={5.2} w={5}/>{Array.from({length:5},(_,i)=><mesh key={i} position={[0,.5+i*.3,2.7]}><boxGeometry args={[.7,.18,.1]}/><meshStandardMaterial color={gold}/></mesh>)}</group>}
+function Lantern({position}){return <group position={position}><mesh position={[0,1.4,0]}><cylinderGeometry args={[.08,.08,.5,8]}/><meshStandardMaterial color="#39220e"/></mesh><mesh position={[0,1,0]}><boxGeometry args={[.42,.48,.42]}/><meshStandardMaterial color="#ffb84b" emissive="#ff8b19" emissiveIntensity={2}/></mesh><mesh position={[0,.72,0]}><coneGeometry args={[.28,.15,8]}/><meshStandardMaterial color="#7e4314"/></mesh></group>}
+function Buddha(){return <group position={[0,2,-8]}><mesh position={[0,-.9,0]}><cylinderGeometry args={[1.45,1.8,.7,24]}/><meshStandardMaterial color="#8a4c1e" metalness:.5/></mesh><mesh position={[0,-.25,0]}><sphereGeometry args={[1.1,24,20]}/><meshStandardMaterial color="#d9a443" metalness:.55/></mesh><mesh position={[0,.8,0]}><sphereGeometry args={[.52,24,20]}/><meshStandardMaterial color="#e7b85b" metalness:.4/></mesh><mesh position={[0,1.35,0]}><sphereGeometry args={[.37,24,20]}/><meshStandardMaterial color="#e7b85b" metalness:.4/></mesh><mesh position={[0,1.72,0]}><coneGeometry args={[.12,.35,12]}/><meshStandardMaterial color={gold}/></mesh><mesh position={[0,2.25,0]}><torusGeometry args={[.85,.055,12,48]}/><meshStandardMaterial color="#f5cf70" emissive="#a66b1b" emissiveIntensity={.6}/></mesh></group>}
+function World({pos}){const avatar=useRef();useFrame(()=>{if(avatar.current){avatar.current.position.x=pos[0];avatar.current.position.z=pos[1];}});
+return <><color attach="background" args={['#071b25']}/><fog attach="fog" args={['#071b25',22,70]}/><ambientLight intensity={1.1}/><directionalLight position={[8,15,8]} intensity={2}/><pointLight position={[0,5,-8]} intensity={18} color="#ffc45b"/><Stars radius={90} depth={40} count={1200} factor={3}/>
+<mesh rotation={[-Math.PI/2,0,0]} position={[0,-.15,0]}><planeGeometry args={[100,100]}/><meshStandardMaterial color="#173c32"/></mesh>
+<mesh position={[0,.02,-5]}><boxGeometry args={[5,.15,28]}/><meshStandardMaterial color="#9c8a6d"/></mesh>
+{Array.from({length:16},(_,i)=><mesh key={i} position={[(i%2?1:-1)*2.5,.03,-i*1.8-1]}><boxGeometry args={[.08,.08,1.6]}/><meshStandardMaterial color="#c0a47b"/></mesh>)}
+<Temple/><Buddha/>{Array.from({length:14},(_,i)=><Lantern key={i} position={[i%2?4:-4,0,-i*2-1]}/>)}
+{[-1,1].map(s=><group key={s} position={[s*8,0,-8]}><mesh position={[0,1,0]}><cylinderGeometry args={[.15,.4,2,8]}/><meshStandardMaterial color="#60452a"/></mesh><mesh position={[0,2.6,0]}><sphereGeometry args={[1.2,12,12]}/><meshStandardMaterial color="#164d35"/></mesh><mesh position={[0,3.4,0]}><sphereGeometry args={[.8,12,12]}/><meshStandardMaterial color="#1d603e"/></mesh></group>)}
+<group ref={avatar} position={[0,0,4]}><mesh position={[0,.8,0]}><capsuleGeometry args={[.28,.8,6,12]}/><meshStandardMaterial color="#d9d2c4"/></mesh><mesh position={[0,1.45,0]}><sphereGeometry args={[.25,16,16]}/><meshStandardMaterial color="#e2b68c"/></mesh><mesh position={[0,.3,0]}><sphereGeometry args={[.3,12,12]}/><meshStandardMaterial color={gold} emissive="#9d6b22" emissiveIntensity={.4}/></mesh></group>
+<OrbitControls target={[0,1,-2]} maxPolarAngle={Math.PI/2.05} minDistance={5} maxDistance={28}/></>}
 }
-function Buddha(){return <group position={[0,1.8,-10]}>
- <mesh><sphereGeometry args={[1,24,24]}/><meshStandardMaterial color="#d9a443" metalness={.65}/></mesh>
- <mesh position={[0,-1,0]}><cylinderGeometry args={[1.5,2,.8,16]}/><meshStandardMaterial color="#8a4c1e"/></mesh>
- <mesh position={[0,1.15,0]}><sphereGeometry args={[.48,20,20]}/><meshStandardMaterial color="#e7b85b"/></mesh>
- <mesh position={[0,1.65,0]}><sphereGeometry args={[.35,20,20]}/><meshStandardMaterial color="#e7b85b"/></mesh>
- </group>}
-function World({pos}) {
- const avatar=useRef();
- useFrame(()=>{if(avatar.current){avatar.current.position.x=pos[0];avatar.current.position.z=pos[1];avatar.current.rotation.y=Math.sin(Date.now()/500)*.08;}});
- return <>
-  <color attach="background" args={['#071b25']}/><fog attach="fog" args={['#071b25',20,65]}/>
-  <ambientLight intensity={1.3}/><directionalLight position={[8,15,8]} intensity={2}/><Stars radius={90} depth={40} count={1200} factor={3}/>
-  <mesh rotation={[-Math.PI/2,0,0]} position={[0,-.15,0]}><planeGeometry args={[100,100]}/><meshStandardMaterial color="#173c32"/></mesh>
-  {Array.from({length:14},(_,i)=><mesh key={i} position={[(i%2?1:-1)*2.5,0,-i*2-2]}><boxGeometry args={[.08,.08,2]}/><meshStandardMaterial color="#b99a67"/></mesh>)}
-  <mesh position={[0,.02,-5]}><boxGeometry args={[5,.15,22]}/><meshStandardMaterial color="#9c8a6d"/></mesh>
-  {Array.from({length:12},(_,i)=><Lantern key={i} position={[i%2?3.5:-3.5,0,-i*2-1]}/>)}
-  <Buddha/>
-  <group ref={avatar} position={[0,0,4]}>
-   <mesh position={[0,.8,0]}><capsuleGeometry args={[.28,.8,6,12]}/><meshStandardMaterial color="#d9d2c4"/></mesh>
-   <mesh position={[0,1.45,0]}><sphereGeometry args={[.25,16,16]}/><meshStandardMaterial color="#e2b68c"/></mesh>
-   <mesh position={[0,.3,0]}><sphereGeometry args={[.3,12,12]}/><meshStandardMaterial color="#d9b15e" emissive="#9d6b22" emissiveIntensity={.4}/></mesh>
-  </group>
-  <OrbitControls target={[0,1,0]} maxPolarAngle={Math.PI/2.05} minDistance={5} maxDistance={22}/>
- </>;
-}
-export default function App(){
- const [name]=useState('Minh Sơn'),[toast,T]=useState('Chào mừng bạn đến Chùa Vô Lượng'),[modal,M]=useState('');
- const [chat,C]=useState(['[Đạo tràng] Diệu Tâm: Nam mô A Di Đà Phật 🙏','[Chung] Ngọc Liên: Chúc đạo tràng an lành!']);
- const [msg,S]=useState(''),[count,N]=useState(0),[xy,XY]=useState([0,4]);
- const note=x=>{T(x);setTimeout(()=>T(''),2400)};
- const ritual=x=>{N(n=>n+1);note('Đã thực hiện '+x+' · Công đức +1 🙏');if(supabase)supabase.auth.getSession().then(({data})=>data.session&&supabase.from('ritual_logs').insert({user_id:data.session.user.id,display_name:name,ritual_type:x}));};
- const actions=[['🙏','Lạy Phật'],['📿','Tràng hạt'],['📖','Tụng kinh'],['🧘','Thiền'],['🌸','Đăng lễ'],['🦌','Linh thú']];
- return <main className="game">
- <Canvas camera={{position:[0,6,13],fov:55}}><World pos={xy}/></Canvas>
- <div className="hud brand"><span>☸</span><b>CHÙA VÔ LƯỢNG</b><small>ĐẠO TRÀNG TRỰC TUYẾN</small></div>
- <aside className="hud profile"><b>🙏 {name}</b><small>Pháp danh: Minh Sơn · Lv. 1</small><div className="xp"><i/></div><small>✨ Công đức: {count}</small><hr/><b>☸ NHIỆM VỤ TU TẬP</b>{['Lễ Phật','Tụng một thời kinh','Thiền 10 phút'].map(x=><button key={x} onClick={()=>ritual(x)}>◇ {x}　<span>Đi ›</span></button>)}</aside>
- <aside className="hud wishes"><b>🪔 ĐÈN NGUYỆN</b><small>Chùa này · Tất cả chùa</small><p>Nguyện cầu bình an cho mọi nhà.</p><button onClick={()=>M('Gửi đèn nguyện')}>＋ Thả đèn nguyện</button></aside>
- <div className="hud topicons">{['Lễ hội','Nhiệm vụ','Cửa hàng','Túi đồ','BXH','Cộng đồng','⚙'].map(x=><button key={x} onClick={()=>M(x)}>{x}</button>)}</div>
- <div className="hud bottomnav">{['Trò chơi','Lễ hội','Có gì mới','Nhiệm vụ','Túi đồ','Cửa hàng','Cộng đồng','Bản đồ chùa'].map(x=><button key={x} onClick={()=>M(x)}>{x}</button>)}</div>
- <div className="hud actions">{actions.map(([e,x])=><button key={x} onClick={()=>ritual(x)}><span>{e}</span>{x}</button>)}</div>
- <div className="hud chat"><b>💬 CỘNG ĐỒNG SÂN CHÙA</b><div className="msgs">{chat.map((x,i)=><p key={i}>{x}</p>)}</div><form onSubmit={e=>{e.preventDefault();if(msg.trim()){C(c=>[...c,msg]);S('')}}}><input value={msg} onChange={e=>S(e.target.value)} placeholder="Trò chuyện..."/><button><Send size={15}/></button></form></div>
- <div className="hud move"><button onClick={()=>XY([xy[0],xy[1]-1])}>▲</button><div><button onClick={()=>XY([xy[0]-1,xy[1]])}>◀</button><button onClick={()=>XY([xy[0]+1,xy[1]])}>▶</button></div><button onClick={()=>XY([xy[0],xy[1]+1])}>▼</button></div>
- <div className="hud toast">{toast}</div>
- {modal&&<div className="overlay"><section><button className="close" onClick={()=>M('')}>×</button><h2>{modal}</h2>{modal==='Túi đồ'?<p>Hương trầm ×1　　<button onClick={()=>note('Đã sử dụng hương trầm')}>Sử dụng</button></p>:modal==='Gửi đèn nguyện'?<><textarea placeholder="Viết lời nguyện..."/><button onClick={()=>{M('');note('Đã thả đèn nguyện 🪔')}}>Gửi lời nguyện</button></>:<p>Chức năng {modal} · Sơn Tự Online</p>}<button onClick={()=>M('')}>Đóng</button></section></div>}
- </main>;
-}
+export default function App(){const [name]=useState('Minh Sơn'),[toast,T]=useState('Chào mừng bạn đến Sơn Tự Online'),[modal,M]=useState('');const [chat,C]=useState(['[Đạo tràng] Diệu Tâm: Nam mô A Di Đà Phật 🙏','[Chung] Ngọc Liên: Chúc đạo tràng an lành!']);const [msg,S]=useState(''),[count,N]=useState(0),[xy,XY]=useState([0,4]);const note=x=>{T(x);setTimeout(()=>T(''),2600)};const ritual=x=>{N(n=>n+1);note('Đã thực hiện '+x+' · Công đức +1 🙏');if(supabase)supabase.auth.getSession().then(({data})=>data.session&&supabase.from('ritual_logs').insert({user_id:data.session.user.id,display_name:name,ritual_type:x}));};const actions=[['🙏','Lạy Phật'],['📿','Tràng hạt'],['📖','Tụng kinh'],['🧘','Thiền'],['🌸','Đăng lễ'],['🦌','Linh thú']];return <main className="game"><Canvas camera={{position:[0,6,13],fov:55}}><World pos={xy}/></Canvas>
+<div className="hud brand"><span>☸</span><b>SƠN TỰ ONLINE</b><small>KHÔNG GIAN TU TẬP & KẾT NỐI</small></div>
+<aside className="hud profile"><b>🙏 {name}</b><small>Pháp danh: Minh Sơn · Lv. 1</small><div className="xp"><i/></div><small>✨ Công đức: {count}</small><hr/><b>☸ NHIỆM VỤ TU TẬP</b>{['Lễ Phật','Tụng một thời kinh','Thiền 10 phút'].map(x=><button key={x} onClick={()=>ritual(x)}>◇ {x}　<span>Đi ›</span></button>)}</aside>
+<aside className="hud wishes"><b>🪔 ĐÈN NGUYỆN</b><small>Chùa này · Tất cả chùa</small><p>Nguyện cầu bình an cho mọi nhà.</p><button onClick={()=>M('Gửi đèn nguyện')}>＋ Thả đèn nguyện</button></aside>
+<div className="hud topicons">{['Lễ hội','Nhiệm vụ','Cửa hàng','Túi đồ','BXH','Cộng đồng','⚙'].map(x=><button key={x} onClick={()=>M(x)}>{x}</button>)}</div>
+<div className="hud bottomnav">{['Trò chơi','Lễ hội','Có gì mới','Nhiệm vụ','Túi đồ','Cửa hàng','Cộng đồng','Bản đồ chùa'].map(x=><button key={x} onClick={()=>M(x)}>{x}</button>)}</div>
+<div className="hud actions">{actions.map(([e,x])=><button key={x} onClick={()=>ritual(x)}><span>{e}</span>{x}</button>)}</div>
+<div className="hud chat"><b>💬 CỘNG ĐỒNG SÂN CHÙA</b><div className="msgs">{chat.map((x,i)=><p key={i}>{x}</p>)}</div><form onSubmit={e=>{e.preventDefault();if(msg.trim()){C(c=>[...c,msg]);S('')}}}><input value={msg} onChange={e=>S(e.target.value)} placeholder="Trò chuyện..."/><button><Send size={15}/></button></form></div>
+<div className="hud move"><button onClick={()=>XY([xy[0],xy[1]-1])}>▲</button><div><button onClick={()=>XY([xy[0]-1,xy[1]])}>◀</button><button onClick={()=>XY([xy[0]+1,xy[1]])}>▶</button></div><button onClick={()=>XY([xy[0],xy[1]+1])}>▼</button></div><div className="hud toast">{toast}</div>
+{modal&&<div className="overlay"><section><button className="close" onClick={()=>M('')}>×</button><h2>{modal}</h2>{modal==='Túi đồ'?<p>Hương trầm ×1　　<button onClick={()=>note('Đã sử dụng hương trầm')}>Sử dụng</button></p>:modal==='Gửi đèn nguyện'?<><textarea placeholder="Viết lời nguyện..."/><button onClick={()=>{M('');note('Đã thả đèn nguyện 🪔')}}>Gửi lời nguyện</button></>:<p>Chức năng {modal} · Sơn Tự Online</p>}<button onClick={()=>M('')}>Đóng</button></section></div>}</main>}
