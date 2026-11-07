@@ -23,3 +23,5 @@ button{cursor:pointer;font-family:inherit}button:focus-visible,input:focus-visib
 @media(min-width:1100px){.profile{width:265px}.wishes{width:245px}.actions button{width:165px;padding:11px}.bottomnav button{padding:12px 16px}}
 
 .scene-fallback{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(ellipse at center,#244a3b,#07151b);color:#e8c46b;font-size:18px;z-index:0}
+
+.game{background:radial-gradient(ellipse at 50% 35%,#244638 0%,#10271f 45%,#07151b 100%)}.game canvas{z-index:0!important}.hud{z-index:5}.overlay{z-index:20}.scene-fallback{z-index:1}
