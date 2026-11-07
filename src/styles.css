@@ -8,3 +8,5 @@ button{cursor:pointer;font-family:inherit}button:focus-visible,input:focus-visib
 .profile button span{font-size:10px;color:#e9c76e}.profile hr{border:0;border-top:1px solid #8d6b36;margin:12px 0}.profile button{cursor:pointer}.profile button:active,.actions button:active{transform:scale(.97)}.chat .msgs p{padding:3px 0;border-bottom:1px solid #ffffff0c;overflow-wrap:anywhere}.chat input{font-family:inherit}.hud{user-select:none}.chat input{user-select:text}
 
 .wishes>button+button{margin-top:6px}.wishlist{max-height:120px;overflow:auto;margin-top:8px}.wishlist p{font-size:11px;padding:7px;background:#251b11;border-radius:5px;margin:5px 0;overflow-wrap:anywhere}.overlay textarea{font-family:inherit;border:1px solid #76552b;border-radius:7px;resize:vertical}.overlay textarea:focus{outline:1px solid #d9ad54}
+
+.topicons button{white-space:nowrap}.topicons{max-width:calc(100vw - 30px);overflow-x:auto}.topicons::-webkit-scrollbar{height:3px}.topicons::-webkit-scrollbar-thumb{background:#87652f}
