@@ -10,3 +10,14 @@ button{cursor:pointer;font-family:inherit}button:focus-visible,input:focus-visib
 .wishes>button+button{margin-top:6px}.wishlist{max-height:120px;overflow:auto;margin-top:8px}.wishlist p{font-size:11px;padding:7px;background:#251b11;border-radius:5px;margin:5px 0;overflow-wrap:anywhere}.overlay textarea{font-family:inherit;border:1px solid #76552b;border-radius:7px;resize:vertical}.overlay textarea:focus{outline:1px solid #d9ad54}
 
 .topicons button{white-space:nowrap}.topicons{max-width:calc(100vw - 30px);overflow-x:auto}.topicons::-webkit-scrollbar{height:3px}.topicons::-webkit-scrollbar-thumb{background:#87652f}
+
+/* interface rebuild: immersive temple HUD */
+.game{background:#07151b}.hud{background:linear-gradient(180deg,rgba(15,20,25,.94),rgba(25,19,14,.88));border:1px solid rgba(215,174,91,.48);box-shadow:0 8px 28px #0006,inset 0 1px #ffe6aa12;border-radius:8px}
+.brand{background:linear-gradient(90deg,#0c1217f2,#191510c9);border-color:#a9823e}.brand span{color:#e9c46b}.brand b{letter-spacing:2.5px}
+.profile{top:104px;width:248px;border-left:3px solid #c49b50}.profile b,.wishes b{color:#f1d18a}.profile .xp i{width:35%;background:linear-gradient(90deg,#9b6a27,#f4d47e)}
+.wishes{top:104px;border-right:3px solid #c49b50}
+.topicons{top:14px;left:50%;right:auto;transform:translateX(-50%);max-width:calc(100vw - 320px);background:#0a0f19d1;border-radius:9px}.topicons button{background:transparent;border-color:transparent;padding:9px 11px;color:#d9c39c}.topicons button:hover{background:#72512a;border-color:#b9904c}
+.bottomnav{bottom:14px;background:#0a0f19e0;border:1px solid #8f6a35;box-shadow:0 8px 30px #0007}.bottomnav button{background:transparent;border-color:transparent;padding:10px 13px;color:#ddc89f}.bottomnav button:first-child{background:#745226;color:#ffedc5;border:1px solid #c9a35c}
+.actions{bottom:112px}.actions button{background:linear-gradient(110deg,#261b13,#49301a);border-color:#9b7439;box-shadow:inset 0 1px #ffffff12}.chat{background:#0c1114e0;border-color:#80602e}.chat>b{color:#e9c97f;letter-spacing:.7px}.move{background:#0c111478;border:1px solid #80602e}.overlay{backdrop-filter:blur(5px);background:#020609b8}.overlay section{background:linear-gradient(155deg,#2a2117,#171513);border-color:#c39b50}.overlay h2{color:#f0d18a;border-bottom:1px solid #73562d;padding-bottom:12px}
+@media(max-width:760px){.topicons{left:8px;right:8px;transform:none;max-width:none;top:62px}.profile{top:112px}.bottomnav{bottom:8px}.actions{bottom:90px}.wishes{display:none}}
+@media(min-width:1100px){.profile{width:265px}.wishes{width:245px}.actions button{width:165px;padding:11px}.bottomnav button{padding:12px 16px}}
