@@ -21,3 +21,5 @@ button{cursor:pointer;font-family:inherit}button:focus-visible,input:focus-visib
 .actions{bottom:112px}.actions button{background:linear-gradient(110deg,#261b13,#49301a);border-color:#9b7439;box-shadow:inset 0 1px #ffffff12}.chat{background:#0c1114e0;border-color:#80602e}.chat>b{color:#e9c97f;letter-spacing:.7px}.move{background:#0c111478;border:1px solid #80602e}.overlay{backdrop-filter:blur(5px);background:#020609b8}.overlay section{background:linear-gradient(155deg,#2a2117,#171513);border-color:#c39b50}.overlay h2{color:#f0d18a;border-bottom:1px solid #73562d;padding-bottom:12px}
 @media(max-width:760px){.topicons{left:8px;right:8px;transform:none;max-width:none;top:62px}.profile{top:112px}.bottomnav{bottom:8px}.actions{bottom:90px}.wishes{display:none}}
 @media(min-width:1100px){.profile{width:265px}.wishes{width:245px}.actions button{width:165px;padding:11px}.bottomnav button{padding:12px 16px}}
+
+.scene-fallback{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(ellipse at center,#244a3b,#07151b);color:#e8c46b;font-size:18px;z-index:0}
