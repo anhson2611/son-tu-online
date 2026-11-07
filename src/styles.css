@@ -30,3 +30,37 @@ button{cursor:pointer;font-family:inherit}button:focus-visible,input:focus-visib
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
 :root{color-scheme:dark}body{background:#11130f}.game{background:#18241c}.hud{backdrop-filter:blur(14px);background:rgba(19,23,19,.78);border:1px solid rgba(224,190,125,.23);box-shadow:0 12px 32px #0005;border-radius:12px;color:#f5eee0}.brand{background:linear-gradient(90deg,#101712eF,#171b16c9);border:1px solid #b69a6340;padding:14px 18px}.brand span{color:#d6b16a}.brand b{font-size:16px;letter-spacing:1.3px;color:#f4e8c9}.brand small{letter-spacing:1px;color:#c7bda5}.profile,.wishes{top:96px;background:#151914d9;border-color:#c8a66a35}.profile{border-left:2px solid #bda16b}.profile b,.wishes b{color:#e8d4a6}.profile button,.wishes button{background:#262d24;border:1px solid #6b684d;color:#eee3c8;border-radius:8px;padding:9px 10px}.profile button:hover,.wishes button:hover{background:#343c2c;border-color:#c9ad70}.xp{background:#30372a}.xp i{background:linear-gradient(90deg,#a78a4b,#e5c77e)}.topicons{top:15px;background:#111711d9;border:1px solid #d2b77b28;gap:2px}.topicons button{color:#e7dcc2;border-radius:7px;font-size:12px}.topicons button:hover{background:#333c2b}.bottomnav{background:#111711e8;border:1px solid #c4a76b45;border-radius:12px;padding:7px}.bottomnav button{font-size:12px;color:#ded4bb}.bottomnav button:first-child{background:#4b5238;border-color:#9e956a}.actions button{background:#171c17d9;border:1px solid #b9a16b55;border-radius:10px;color:#f0e4ca}.actions button:hover{background:#333c2b;border-color:#d3b879}.chat{background:#111711dc;border-color:#b9a16b45}.chat b{color:#e6d5a7}.chat input{background:#20261e;border-color:#555c45}.chat form button{background:#687047;color:#fff4d9}.move{background:#141a14b8;border-color:#a99a6345}.move button{background:#353e2b;border-color:#9a9567}.toast{background:#252c21e8;border-color:#b9a16b65}.overlay section{background:#1b2119;border-color:#b9a16b70}.overlay h2{color:#e8d5a8}.overlay button{background:#4d5738;border-color:#9a9567}.scene-fallback{background:linear-gradient(#243d30,#101a14)}
 @media(max-width:760px){.brand{padding:9px}.profile{top:108px}.topicons{top:60px}.actions{bottom:88px}.chat{bottom:75px}}
+
+
+/* Refinement pass: immersive temple viewport + clearer hierarchy */
+.game{font-family:'Be Vietnam Pro',system-ui,sans-serif;overflow:hidden}
+.game canvas{filter:saturate(.88) contrast(1.04)}
+.brand{left:18px;top:16px;display:flex;align-items:center;gap:10px;min-width:260px}
+.brand span{font-size:27px;text-shadow:0 0 18px #d9ad5480}
+.brand small{display:block;font-size:9px;margin-top:3px}
+.profile,.wishes{top:82px}
+.profile{line-height:1.55}
+.profile>hr{border:0;border-top:1px solid #bda16b30;margin:12px 0}
+.profile button{display:flex;justify-content:space-between;width:100%;text-align:left;margin:5px 0;font-size:11px}
+.profile button span{color:#d4bd82}
+.wishes p{font-size:12px;color:#d9d0bb}
+.topicons{border-radius:10px;padding:5px 8px;max-width:calc(100vw - 350px)}
+.topicons button{white-space:nowrap;font-weight:500}
+.actions{display:flex;gap:8px;justify-content:center}
+.actions button{display:flex;align-items:center;gap:9px;justify-content:center;min-width:120px}
+.actions button span{font-size:20px}
+.chat{max-width:290px}
+.chat .msgs{max-height:130px;overflow:auto}
+.bottomnav{display:flex;gap:3px;max-width:calc(100vw - 30px);overflow-x:auto}
+.bottomnav button{white-space:nowrap}
+@media(max-width:760px){
+ .brand{left:8px;top:8px;min-width:0}.brand small{display:none}
+ .profile{left:8px;width:190px;top:108px}
+ .topicons{left:8px;right:8px;max-width:none;overflow-x:auto}
+ .wishes{display:none}
+ .actions{left:8px;right:8px;gap:4px;flex-wrap:wrap}
+ .actions button{min-width:0;flex:1;padding:8px 4px;font-size:10px}
+ .actions button span{font-size:16px}
+ .chat{display:none}
+ .bottomnav{left:8px;right:8px;justify-content:flex-start}
+}
